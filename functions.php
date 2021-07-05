@@ -50,3 +50,11 @@ function select($conn, $sql)
 
     return $select;
 }
+
+function insert($conn, $sql)
+{
+    $sql = $conn->prepare($sql);
+    $sql->execute();
+
+    return $conn->lastInsertId();
+}

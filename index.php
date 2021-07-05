@@ -9,7 +9,7 @@
 
 <body>
     <header>
-        <h1>Trip calculator</h1>
+        <h1><a href="index.php">Trip calculator</a></h1>
     </header>
 
     <aside>
@@ -21,7 +21,7 @@
     </section>
 
     <footer>
-        2O21 (c)
+        2O21
     </footer>
 </body>
 
