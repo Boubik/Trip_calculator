@@ -3,14 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Trip calculator</title>
+    <title>Split calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1><a href="index.php">Trip calculator</a></h1>
+        <h1><a href="index.php">Split calculator</a></h1>
+        <a href="add.php">Add new item set</a>
     </header>
+
+    <br>
 
     <section>
         <table>
@@ -98,18 +101,18 @@
                         foreach ($_POST["people"] as $people) {
                             $people = ucfirst(strtolower($people));
 
-                            $sql = "SELECT `name` FROM `users` WHERE `name` = \"" . $people . "\"";
+                            $sql = "SELECT `name` FROM `user` WHERE `name` = \"" . $people . "\"";
                             $rows = select($conn, $sql);
                             if (!isset($rows[0])) {
-                                $sql = "INSERT INTO `users`(`name`) VALUES ('" . $people . "')";
+                                $sql = "INSERT INTO `user`(`name`) VALUES ('" . $people . "')";
                                 insert($conn, $sql);
                             }
 
 
-                            $sql = "SELECT `users_name`, `item_set_name` FROM `users_has_item_set` WHERE `users_name` = \"" . $people . "\" AND `item_set_name` = \"" . filter_input(INPUT_GET, "name") . "\"";
+                            $sql = "SELECT `user_name`, `item_set_name` FROM `user_has_item_set` WHERE `user_name` = \"" . $people . "\" AND `item_set_name` = \"" . filter_input(INPUT_GET, "name") . "\"";
                             $rows = select($conn, $sql);
                             if (!isset($rows[0])) {
-                                $sql = "INSERT INTO `users_has_item_set`(`users_name`, `item_set_name`) VALUES ('" . $people . "','" . filter_input(INPUT_GET, "name") . "')";
+                                $sql = "INSERT INTO `user_has_item_set`(`user_name`, `item_set_name`) VALUES ('" . $people . "','" . filter_input(INPUT_GET, "name") . "')";
                                 insert($conn, $sql);
                             }
                         }
@@ -120,6 +123,8 @@
             ?>
         </table>
     </section>
+
+    <br>
 
     <footer>
         2O21
