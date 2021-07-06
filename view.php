@@ -11,7 +11,7 @@
     <header>
         <h1><a href="index.php">Split calculator</a></h1>
         <a href="add.php">Add new item set</a>
-        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <script src="js/sorttable.js"></script>
     </header>
 
     <br>
@@ -248,7 +248,7 @@
         </script>
         <div id="people" style="height: 400px; width: 425px;"></div>
         <div id="category" style="height: 400px; width: 425px;"></div>
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="js/canvasjs.min.js"></script>
 
         <table class="sortable">
             <tr>
