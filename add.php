@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/default.css">
 </head>
 
 <body>
@@ -18,6 +18,7 @@
     <section>
         <table>
             <?php
+            error_reporting(0);
             include "functions.php";
             $conn = connect_db();
             if (!isset($_GET["people"])) {
