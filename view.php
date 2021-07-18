@@ -39,6 +39,9 @@
 
             <table>
                 <tr>
+                    <th>Add new item</th>
+                </tr>
+                <tr>
                     <th>Category</th>
                     <td><input type="text" name="category"></td>
                 </tr>
@@ -75,7 +78,7 @@
                 </tr>
             </table>
         </form>
-        People:
+
         <?php
         $sql = "SELECT `t1`.`name`, `t2`.`sum` FROM (SELECT `user`.`name` as `name` FROM `user` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`user_name` = `user`.`name` INNER JOIN `item_set` ON `item_set`.`name` = `user_has_item_set`.`item_set_name` WHERE `item_set`.`name` = \"" . filter_input(INPUT_GET, "name") . "\") as `t1` LEFT JOIN (SELECT `user`.`name` as `name`, SUM(`price`) as `sum` FROM `item` INNER JOIN `user` ON `user`.`name` = `item`.`user_name` INNER JOIN `item_set` ON `item_set`.`name` = `item`.`item_set_name` WHERE `item_set`.`name` = \"" . filter_input(INPUT_GET, "name") . "\" GROUP by `user`.`name`) as `t2` ON `t1`.`name` = `t2`.`name` ORDER BY `t2`.`sum` DESC";
         $people = select($conn, $sql);
@@ -85,6 +88,11 @@
         $sql = "SELECT SUM(`item`.`price`) as `sum`, `category`.`name` FROM `category` INNER JOIN `item` on `item`.`category_name` = `category`.`name` INNER JOIN `item_set` on `item`.`item_set_name` = `item_set`.`name` WHERE `item_set`.`name` = \"" . filter_input(INPUT_GET, "name") . "\" GROUP BY `category`.`name` ORDER BY `sum` DESC";
         $category = select($conn, $sql);
         echo "<table>";
+        echo "<tr>";
+        echo "<th>";
+        echo "People:";
+        echo "</th>";
+        echo "</tr>";
         $max_price = 0;
         foreach ($people as $row) {
             echo "<tr>";
@@ -106,6 +114,11 @@
         echo "<tr>";
         echo "</tr>";
         echo "<tr>";
+        echo "</tr>";
+        echo "<tr>";
+        echo "<th>";
+        echo "Category:";
+        echo "</th>";
         echo "</tr>";
 
         foreach ($category as $row) {
