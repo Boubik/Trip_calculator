@@ -39,17 +39,13 @@
 
             <table>
                 <tr>
-                    <th>Add new item</th>
-                </tr>
-
-                <tr>
                     <th>Category</th>
-                    <th><input type="text" name="category"></th>
+                    <td><input type="text" name="category"></td>
                 </tr>
 
                 <tr>
                     <th>Who</th>
-                    <th>
+                    <td>
                         <select name="user">
                             <?php
                             $sql = "SELECT `user`.`name` FROM `user` INNER JOIN `user_has_item_set` ON `user`.`name` = `user_has_item_set`.`user_name` INNER JOIN `item_set` ON `item_set`.`name` = `user_has_item_set`.`item_set_name` WHERE `item_set`.`name` = \"" . filter_input(INPUT_GET, "name") . "\"";
@@ -61,21 +57,21 @@
                             }
                             ?>
                         </select>
-                    </th>
+                    </td>
                 </tr>
 
                 <tr>
                     <th>Price</th>
-                    <th><input type="number" min="0" name="price"></th>
+                    <td><input type="number" min="0" name="price"></td>
                 </tr>
 
                 <tr>
                     <th>Note</th>
-                    <th><input type="text" name="note"></th>
+                    <td><input type="text" name="note"></td>
                 </tr>
 
                 <tr>
-                    <th><input type="submit" name="submit" value="Submit"></th>
+                    <td><input type="submit" name="submit" value="Submit"></td>
                 </tr>
             </table>
         </form>
@@ -96,14 +92,14 @@
             echo $row["name"];
             echo "</th>";
 
-            echo "<th>";
+            echo "<td>";
             if (is_null($row["sum"])) {
                 echo "0";
             } else {
                 echo number_format($row["sum"], 2, ",", " ");
                 $max_price += $row["sum"];
             }
-            echo "</th>";
+            echo "</td>";
             echo "</tr>";
         }
 
@@ -118,34 +114,34 @@
             echo $row["name"];
             echo "</th>";
 
-            echo "<th>";
+            echo "<td>";
             if (is_null($row["sum"])) {
                 echo "0";
             } else {
                 echo number_format($row["sum"], 2, ",", " ");
             }
-            echo "</th>";
+            echo "</td>";
             echo "</tr>";
         }
         echo "<tr>";
-        echo "<th>";
-        echo "</th>";
+        echo "<td>";
+        echo "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>";
         echo "Full price";
         echo "</th>";
-        echo "<th>";
+        echo "<td>";
         echo $max_price;
-        echo "</th>";
+        echo "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>";
         echo "Price per person";
         echo "</th>";
-        echo "<th>";
+        echo "<td>";
         echo number_format($max_price / count($people), 2, ".", " ");
-        echo "</th>";
+        echo "</td>";
         echo "</tr>";
         echo "</table>";
 
@@ -181,15 +177,15 @@
                 $peopleAlt[$smallestId]["sum"] += $number;
                 $peopleAlt[$bigestId]["sum"] -= $number;
 
-                echo "<th>";
+                echo "<td>";
                 echo $peopleAlt[$smallestId]["name"];
-                echo "</th>";
-                echo "<th>";
+                echo "</td>";
+                echo "<td>";
                 echo $peopleAlt[$bigestId]["name"];
-                echo "</th>";
-                echo "<th>";
+                echo "</td>";
+                echo "<td>";
                 echo $number;
-                echo "</th>";
+                echo "</td>";
                 echo "</tr>";
             }
         }
@@ -263,10 +259,10 @@
             $rows = select($conn, $sql);
             foreach ($rows as $row) {
                 echo "<tr>";
-                echo "<th>" . $row["price"] . "</th>";
-                echo "<th>" . $row["category_name"] . "</th>";
-                echo "<th>" . $row["user_name"] . "</th>";
-                echo "<th>" . $row["note"] . "</th>";
+                echo "<td>" . $row["price"] . "</td>";
+                echo "<td>" . $row["category_name"] . "</td>";
+                echo "<td>" . $row["user_name"] . "</td>";
+                echo "<td>" . $row["note"] . "</td>";
                 echo " </tr>";
             }
             ?>
