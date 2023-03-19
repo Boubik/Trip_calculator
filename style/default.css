@@ -4,6 +4,7 @@ body {
   background-color: #353535;
   color: #00c3ff;
   font-family: 'Rubik', sans-serif;
+  overflow-x: hidden;
 }
 
 h1 a {
@@ -11,7 +12,6 @@ h1 a {
   color: #00c3ff;
   position: absolute;
   left: 30px !important;
-  font-family: 'Press Start 2P', cursive;
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
@@ -57,10 +57,10 @@ footer {
   vertical-align: middle;
 }
 
-.main {
-  width: 50%;
+.container {
+  margin: auto;
+  margin-top: 25vh;
   height: auto;
-  margin-left: 25%;
 }
 
 #grid {
@@ -68,14 +68,124 @@ footer {
   display: inline-grid;
   -ms-grid-columns: auto auto auto;
       grid-template-columns: auto auto auto;
-  padding: 10px;
+  padding: 50px;
 }
 
 #item {
   padding: 20px;
   font-size: 30px;
   text-align: center;
-  width: 100px;
   border-radius: 25px;
+}
+
+aside {
+  margin-top: 100px;
+}
+
+#first {
+  margin: auto;
+  width: 400px;
+}
+
+#first input[type=submit] {
+  position: absolute;
+  left: 47vw;
+  border: 2px solid #00c3ff;
+  color: #00c3ff;
+  border-radius: 15px;
+  background-color: #00c3ff00;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#first input[type=submit]:hover {
+  color: #00ff9d;
+  border: 2px solid #00ff9d;
+}
+
+#first input[type=number], #first input[type=text] {
+  border-width: 2 2 2px;
+  border-radius: 15px;
+  border-color: #00c3ff;
+  background-color: rgba(245, 222, 179, 0);
+  color: #00c3ff;
+}
+
+#second {
+  width: 860px;
+  border: 5px solid #00c3ff;
+  border-radius: 15px;
+  margin: auto;
+}
+
+#second th, #second td {
+  padding: 8px;
+  text-align: left;
+  padding: auto;
+}
+
+#third {
+  width: 860px;
+  border: 5px solid #00c3ff;
+  border-radius: 15px;
+  margin: auto;
+}
+
+#third th, #third td {
+  padding: 8px;
+  text-align: middle;
+  padding: auto;
+}
+
+#ppl {
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+select {
+  color: #00c3ff;
+  background-color: #00c3ff00;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  height: 23px;
+  border-color: #00c3ff;
+  border-radius: 15px;
+  width: 170px;
+  text-align: center;
+}
+
+select option {
+  margin: 40px;
+  background: #353535;
+  color: #00c3ff;
+}
+
+.sortable {
+  width: 860px;
+  border: 5px solid #00c3ff;
+  border-radius: 15px;
+  margin: auto;
+}
+
+section {
+  width: 860px;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#people, #category {
+  height: 400px;
+  width: 425px;
+  display: inline-block;
+}
+
+#empty {
+  border-bottom: #00c3ff 1px solid;
+  padding: 0;
 }
 /*# sourceMappingURL=default.css.map */

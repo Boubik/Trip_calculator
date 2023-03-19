@@ -9,14 +9,14 @@
 
 <body>
     <header>
-        <h1><a href="index.php">Split calculator</a></h1>
+        <h1><a href="/">Split calculator</a></h1>
         <a href="add.php">Add new item set</a>
     </header>
 
     <br>
 
     <section>
-        <table>
+        <table id="first" style="margin-left:50vh; margin-top:30vh; transform: translate(-50%, -30%);">
             <?php
             error_reporting(0);
             include "functions.php";
