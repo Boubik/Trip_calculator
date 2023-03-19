@@ -157,18 +157,6 @@ function all_have_same_number($array)
 }
 
 /**
- * will calculate how much can pay or how much is needed
- * + can give
- * - need
- */
-function pay($number, $perPerson)
-{
-    $number = number_format($number, 2, ".", "");
-    $perPerson = number_format($perPerson, 2, ".", "");
-    return number_format($number + $perPerson, 2, ".", "");
-}
-
-/**
  * will calculate how much does $id item cost for one person
  */
 function count_users_on_item($conn, $id)
