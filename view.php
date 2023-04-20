@@ -11,7 +11,10 @@
     <header>
         <h1><a href="index.php">Split calculator</a></h1>
         <?php
-        echo "<a href=\"view.php?id=" . filter_input(INPUT_GET, "id") . "&share=true\">Share</a>";
+        include "functions.php";
+        $conn = connect_db();
+        session_start();
+        echo "<a href=\"view.php?id=" . filter_input(INPUT_GET, "id") . "&share=" . $_SESSION["username"] . "\">Share</a>";
         echo "<a href=\"add_user.php?id=" . filter_input(INPUT_GET, "id") . "\">Add user</a>";
         echo "<a href=\"add_item.php?id=" . filter_input(INPUT_GET, "id") . "\">Add new item</a>";
         ?>
@@ -23,11 +26,11 @@
 
     <aside>
         <?php
-        include "functions.php";
-        $conn = connect_db();
-        session_start();
         if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
-            header("Location: /");
+            if (!isset($_GET["share"])) {
+                header("Location: /");
+            }
+            $_SESSION["username"] = filter_input(INPUT_GET, "share");
         }
         ?>
         <div class="main">
@@ -277,7 +280,7 @@
             <th>Will pay</th>
             <th>note</th>
             <?php
-            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
                 echo "<th>Control</th>";
             }
             ?>
@@ -297,7 +300,7 @@
             echo "<td>" . $row["payer"] . "</td>";
             echo "<td>" . $row["will_pay"] . "</td>";
             echo "<td>" . $row["note"] . "</td>";
-            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
                 echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\">Edit</a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\">Delete</a></td>";
             }
             echo " </tr>";
