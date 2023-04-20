@@ -123,6 +123,8 @@
                     $dataCategory = array();
                     $sumAll = array();
                     foreach ($category as $row) {
+                        $sumAll[$row["currency"]]["everyone"] = 0;
+                        $sumAll[$row["currency"]]["me"] = 0;
                         echo "<tr>";
                         echo "<td>";
                         echo $row["category"];
@@ -163,7 +165,6 @@
                         echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
                         echo "</td>";
                         echo "</tr>";
-                        $i++;
                     }
                     ?>
                 </table>
