@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <title>Split calculator</title>
     <link rel="stylesheet" href="style/default.css">
+    <script src="js/sha3.js"></script>
+    <script type="text/javascript">
+        function changePasswords() {
+            if (document.getElementById("password").value.length != 0) {
+                var hash = CryptoJS.SHA3(document.getElementById("password").value, {
+                    outputLength: 512
+                });
+                document.getElementById("password").value = hash;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -54,12 +65,12 @@
                     echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
                 }
             } else {
-                echo "<form method=\"POST\" action=\"\">";
+                echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
                 echo "<label for=\"fname\">Username:</label>";
-                echo "<input type=\"text\" name=\"username\" placeholder=\"Username\" value=\"\">";
+                echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
                 echo "<br>";
                 echo "<label for=\"lname\">Password:</label>";
-                echo "<input type=\"password\" name=\"password\" placeholder=\"Password\">";
+                echo "<input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">";
                 echo "<br>";
                 echo "<input type=\"submit\" name=\"submit\" value=\"Login\">";
                 echo "</form>";
@@ -73,5 +84,15 @@
         </div>
     </section>
 </body>
+<script type="text/javascript">
+    $('.form-signin').submit(function() {
+        if ($("#password").val().length !== 0) {
+            var hash = CryptoJS.SHA3($("#password").val(), {
+                outputLength: 512
+            });
+            $("#password").val(hash);
+        }
+    });
+</script>
 
 </html>
