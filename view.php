@@ -28,7 +28,7 @@
         <?php
         if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
             if (!isset($_GET["share"])) {
-                header("Location: /");
+                header("Location: index.php");
             }
             $_SESSION["username"] = filter_input(INPUT_GET, "share");
         }

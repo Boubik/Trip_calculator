@@ -29,7 +29,7 @@
         $_SESSION["password"] = $_POST["password"];
         unset($_POST["username"]);
         unset($_POST["password"]);
-        header("Location: /");
+        header("Location: index.php");
     } else {
     }
 

@@ -43,7 +43,7 @@
             register($conn, $_POST["username"], $_POST["password1"]);
             $_SESSION["username"] = $_POST["username"];
             $_SESSION["password"] = $_POST["password1"];
-            header("Location: /");
+            header("Location: index.php");
         }
     }
     ?>

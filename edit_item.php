@@ -13,7 +13,7 @@
     $conn = connect_db();
     session_start();
     if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || !isset($_GET["back"]) || !isset($_GET["id"]) || !own_item_set($conn, filter_input(INPUT_GET, "back"), $_SESSION["username"])) {
-        header("Location: /");
+        header("Location: index.php");
     }
     ?>
 
