@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | Add item set</title>
-    <link rel="stylesheet" href="style/default.css">
+    <link rel="stylesheet" href="style/default.scss">
 </head>
 
 <body>
@@ -12,7 +12,7 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
-    if(!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])){
+    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])) {
         header("Location: index.php");
     }
     ?>
@@ -26,9 +26,9 @@
     <section>
         <div class='container'>
             <?php
-            if(isset($_POST["submit"])){
+            if (isset($_POST["submit"])) {
                 $id = add_item_set($conn, $_POST["name"], $_SESSION["username"]);
-                header("Location: view.php?id=".$id);
+                header("Location: view.php?id=" . $id);
             }
             echo "<form method=\"POST\" action=\"\">";
             echo "<label for=\"fname\">Name:</label>";

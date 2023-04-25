@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | Register</title>
-    <link rel="stylesheet" href="style/default.css">
+    <link rel="stylesheet" href="style/default.scss">
     <script src="js/sha3.js"></script>
     <script type="text/javascript">
         function changePasswords() {
@@ -55,31 +55,29 @@
     <br>
 
     <section>
-        <div class='container'>
-            <?php
-            if (isset($user_is_taken) and $user_is_taken) {
-                echo "Username is already taken. ";
-            }
-            if (isset($short_password) and $short_password) {
-                echo "Password need to be at least 6 characters. ";
-            }
-            if (isset($password_is_not_same) and $password_is_not_same) {
-                echo "Passwords need to be same. ";
-            }
-            echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
-            echo "<label for=\"fname\">Username:</label>";
-            echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
-            echo "<br>";
-            echo "<label for=\"lname\">Password:</label>";
-            echo "<input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">";
-            echo "<br>";
-            echo "<label for=\"lname\">Password:</label>";
-            echo "<input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">";
-            echo "<br>";
-            echo "<input type=\"submit\" name=\"submit\" value=\"Register\">";
-            echo "</form>";
-            ?>
-        </div>
+        <?php
+        if (isset($user_is_taken) and $user_is_taken) {
+            echo "Username is already taken. ";
+        }
+        if (isset($short_password) and $short_password) {
+            echo "Password need to be at least 6 characters. ";
+        }
+        if (isset($password_is_not_same) and $password_is_not_same) {
+            echo "Passwords need to be same. ";
+        }
+        echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
+        echo "<label for=\"fname\">Username:</label>";
+        echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
+        echo "<br>";
+        echo "<label for=\"lname\">Password:</label>";
+        echo "<input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">";
+        echo "<br>";
+        echo "<label for=\"lname\">Password:</label>";
+        echo "<input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">";
+        echo "<br>";
+        echo "<input type=\"submit\" name=\"submit\" value=\"Register\">";
+        echo "</form>";
+        ?>
     </section>
 </body>
 

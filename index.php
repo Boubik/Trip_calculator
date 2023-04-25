@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator</title>
-    <link rel="stylesheet" href="style/default.css">
+    <link rel="stylesheet" href="style/default.scss">
+    <link rel="icon" type="image/png" href="./images/calculator_favicon.svg">
+
     <script src="js/sha3.js"></script>
     <script type="text/javascript">
         function changePasswords() {
@@ -52,10 +54,8 @@
         ?>
     </header>
 
-    <br>
-
-    <section>
-        <div class='container'>
+    <main>
+        <section>
             <?php
             if ($login) {
                 $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
@@ -65,24 +65,29 @@
                     echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
                 }
             } else {
-                echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
-                echo "<label for=\"fname\">Username:</label>";
-                echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
-                echo "<br>";
-                echo "<label for=\"lname\">Password:</label>";
-                echo "<input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">";
-                echo "<br>";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Login\">";
-                echo "</form>";
+                echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
+                        <label for=\"fname\">Username:</label>
+                        <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Chlouba Prank\" value=\"\">
+                        <br>
+                        <label for=\"lname\">Password:</label>
+                        <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">
+                        <br>
+                        <input type=\"submit\" name=\"submit\" value=\"Login\">
+                        </form>";
             }
-
-
-
-
-
             ?>
+        </section>
+    </main>
+
+    <footer>
+        <hr />
+        <div class="row1">&copy; Boubik, Bublifuk</div>
+        <div class="row2">
+            <a href="https://github.com/Boubik/Trip_calculator">
+                <img class="svg-social" src="./images/github.svg" alt="github" width="40" height="40">
+            </a>
         </div>
-    </section>
+    </footer>
 </body>
 <script type="text/javascript">
     $('.form-signin').submit(function() {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | Add item</title>
-    <link rel="stylesheet" href="style/default.css">
+    <link rel="stylesheet" href="style/default.scss">
 </head>
 
 <body>
