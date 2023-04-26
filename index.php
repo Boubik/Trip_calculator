@@ -65,15 +65,17 @@
                     echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
                 }
             } else {
-                echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
-                        <label for=\"fname\">Username:</label>
-                        <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Chlouba Prank\" value=\"\">
-                        <br>
-                        <label for=\"lname\">Password:</label>
-                        <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">
-                        <br>
-                        <input type=\"submit\" name=\"submit\" value=\"Login\">
-                        </form>";
+                echo "<div class=\"login-wrap\" onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
+                        <h2>Login</h2>
+
+                        <form>
+                            <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">
+                            <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">
+                            <button type=\"submit\" name=\"submit\" value=\"Login\">Sign In</button>
+                            <a href=\"register.php\"><p> Don't have an account? Register! </p></a>
+                        </form>
+
+                      </div>";
             }
             ?>
         </section>
