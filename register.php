@@ -65,18 +65,18 @@
         if (isset($password_is_not_same) and $password_is_not_same) {
             echo "Passwords need to be same. ";
         }
-        echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
-        echo "<label for=\"fname\">Username:</label>";
-        echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
-        echo "<br>";
-        echo "<label for=\"lname\">Password:</label>";
-        echo "<input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">";
-        echo "<br>";
-        echo "<label for=\"lname\">Password:</label>";
-        echo "<input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">";
-        echo "<br>";
-        echo "<input type=\"submit\" name=\"submit\" value=\"Register\">";
-        echo "</form>";
+        echo "<div class=\"login-wrap\">
+                    <h2>Login</h2>
+
+                    <form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
+                        <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">
+                        <input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">
+                        <input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">
+                        <button type=\"submit\" name=\"submit\" value=\"Register\">Sign Up</button>
+                        <a href=\"register.php\"><p> Don't have an account? Register! </p></a>
+                    </form>
+
+              </div>";
         ?>
     </section>
 </body>

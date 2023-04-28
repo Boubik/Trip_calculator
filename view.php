@@ -17,6 +17,11 @@
         echo "<a href=\"view.php?id=" . filter_input(INPUT_GET, "id") . "&share=" . $_SESSION["username"] . "\">Share</a>";
         echo "<a href=\"add_user.php?id=" . filter_input(INPUT_GET, "id") . "\">Add user</a>";
         echo "<a href=\"add_item.php?id=" . filter_input(INPUT_GET, "id") . "\">Add new item</a>";
+
+        echo "<div class=\"view-navbar\">
+                
+
+              </div>";
         ?>
         <script src="js/sorttable.js"></script>
         <script src="js/chart.js"></script>

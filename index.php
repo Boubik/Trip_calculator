@@ -43,13 +43,25 @@
     ?>
 
     <header>
-        <h1><a href="/">Split calculator</a></h1>
+        <div class="nav">
+            <input type="checkbox" id="nav-check">
+            <div class="nav-header">
+                <div class="nav-title">
+                    <a href="/Trip_calculator">Trip-Calculator</a>
+                </div>
+            </div>
+            <div class="nav-btn">
+                <label for="nav-check">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+        </div>
         <?php
         if ($login) {
             echo "<a href=\"add_itemset.php\">Add new item set</a>";
             echo "<a href=\"logout.php\">Logout of " . $_SESSION["username"] . "</a>";
-        } else {
-            echo "<a href=\"register.php\">Register</a>";
         }
         ?>
     </header>
@@ -65,10 +77,10 @@
                     echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
                 }
             } else {
-                echo "<div class=\"login-wrap\" onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
+                echo "<div class=\"login-wrap\">
                         <h2>Login</h2>
 
-                        <form>
+                        <form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
                             <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">
                             <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">
                             <button type=\"submit\" name=\"submit\" value=\"Login\">Sign In</button>
