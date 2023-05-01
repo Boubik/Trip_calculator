@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Split calculator</title>
-    <link rel="stylesheet" href="style/default.scss">
+    <link rel="stylesheet" href="style/default.css">
     <link rel="icon" type="image/png" href="./images/calculator_favicon.svg">
 
     <script src="js/sha3.js"></script>
@@ -43,21 +44,8 @@
     ?>
 
     <header>
-        <div class="nav">
-            <input type="checkbox" id="nav-check">
-            <div class="nav-header">
-                <div class="nav-title">
-                    <a href="/Trip_calculator">Trip-Calculator</a>
-                </div>
-            </div>
-            <div class="nav-btn">
-                <label for="nav-check">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-            </div>
-        </div>
+        <h1>Split Calculator</h1>
+
         <?php
         if ($login) {
             echo "<a href=\"add_itemset.php\">Add new item set</a>";
