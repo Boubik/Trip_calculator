@@ -25,6 +25,7 @@
 <body>
     <?php
     include "functions.php";
+    include "bootstrap.php";
     $conn = connect_db();
     session_start();
     if (isset($_POST["username"]) and !is_null($_POST["username"])) {

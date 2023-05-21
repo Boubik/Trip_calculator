@@ -12,6 +12,7 @@
         <h1><a href="index.php">Split calculator</a></h1>
         <?php
         include "functions.php";
+        include "bootstrap.php";
         $conn = connect_db();
         session_start();
         echo "<a href=\"view.php?id=" . filter_input(INPUT_GET, "id") . "&share=" . $_SESSION["username"] . "\">Share</a>";
