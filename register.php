@@ -23,6 +23,7 @@
 </head>
 
 <body>
+
     <?php
     include "functions.php";
     $conn = connect_db();
@@ -48,13 +49,10 @@
     }
     ?>
 
-    <header>
-        <h1><a href="/">Split calculator</a></h1>
-    </header>
-
     <br>
 
     <section>
+
         <?php
         if (isset($user_is_taken) and $user_is_taken) {
             echo "Username is already taken. ";
@@ -73,7 +71,7 @@
                         <input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">
                         <input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">
                         <button type=\"submit\" name=\"submit\" value=\"Register\">Sign Up</button>
-                        <a href=\"register.php\"><p> Don't have an account? Register! </p></a>
+                        <a href=\"index.php\"><p> Already have an account? Login! </p></a>
                     </form>
 
               </div>";

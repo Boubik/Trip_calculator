@@ -2,12 +2,6 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Split calculator</title>
-    <link rel="stylesheet" href="style/default.css">
-    <link rel="icon" type="image/png" href="./images/calculator_favicon.svg">
-
     <script src="js/sha3.js"></script>
     <script type="text/javascript">
         function changePasswords() {
@@ -19,6 +13,11 @@
             }
         }
     </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Split calculator</title>
+    <link rel="stylesheet" href="style/default.scss">
+    <link rel="icon" type="image/svg" href="./images/calculator_favicon.svg">
 </head>
 
 <body>
@@ -26,6 +25,7 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
+
 
     if ((isset($_POST["username"]) and !is_null($_POST["username"])) and (isset($_POST["username"]) and !is_null($_POST["password"]))) {
         $_SESSION["username"] = $_POST["username"];
@@ -43,18 +43,45 @@
     }
     ?>
 
-    <header>
-        <h1>Split Calculator</h1>
-
-        <?php
-        if ($login) {
-            echo "<a href=\"add_itemset.php\">Add new item set</a>";
-            echo "<a href=\"logout.php\">Logout of " . $_SESSION["username"] . "</a>";
-        }
-        ?>
-    </header>
-
     <main>
+        <section class="navigation">
+            <div class="nav-container">
+                <div class="brand">
+                    <img src="./images/icons8-calculator.svg" alt="">
+                    <a href="#!">Split-Calculator</a>
+                </div>
+
+                <nav>
+                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="#!">Home</a>
+                        </li>
+                        <li>
+                            <a href="#!">About</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                        </li>
+                        <li>
+                            <a href="#!">Contact</a>
+                        </li>
+                        <?php
+                        if ($login) {
+                            echo '
+                        <li>
+                            <a href="add_itemset.php">Add item</a>
+                        </li>
+                        <li>
+                            <a href="logout.php">Logout</a>
+                        </li>
+                        ';
+                        }
+                        ?>
+                    </ul>
+                </nav>
+            </div>
+        </section>
         <section>
             <?php
             if ($login) {
@@ -65,32 +92,40 @@
                     echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
                 }
             } else {
-                echo "<div class=\"login-wrap\">
-                        <h2>Login</h2>
+                echo
+                '
+                    <div class="center">
+                        <h1>Login</h1>
+                        
+                        <form onsubmit="changePasswords()" method="POST" action="">
+                        
+                            <div class="txt_field">
+                                <input type="text" id="username" name="username" placeholder="Username" value="">                                
+                                <span></span>
+                                <label>Username</label>
+                            </div>
 
-                        <form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
-                            <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">
-                            <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">
-                            <button type=\"submit\" name=\"submit\" value=\"Login\">Sign In</button>
-                            <a href=\"register.php\"><p> Don't have an account? Register! </p></a>
+                            <div class="txt_field">
+                                <input type="password" id="password" name="password" placeholder="Password">
+                                <span></span>
+                                <label>Password</label>
+                            </div>
+
+                            <input type="submit" name="submit" value="Login">
+                            <div class="signup_link">
+                            Not a member? <a href="register.php"> Sign-Up</a>
+                            </div>
+
                         </form>
 
-                      </div>";
+                    </div>
+                ';
             }
             ?>
         </section>
     </main>
-
-    <footer>
-        <hr />
-        <div class="row1">&copy; Boubik, Bublifuk</div>
-        <div class="row2">
-            <a href="https://github.com/Boubik/Trip_calculator">
-                <img class="svg-social" src="./images/github.svg" alt="github" width="40" height="40">
-            </a>
-        </div>
-    </footer>
 </body>
+
 <script type="text/javascript">
     $('.form-signin').submit(function() {
         if ($("#password").val().length !== 0) {
@@ -101,5 +136,7 @@
         }
     });
 </script>
+<script src="./js/navbar.js"></script>
+
 
 </html>
