@@ -7,6 +7,7 @@
     <title>Split calculator</title>
     <link rel="stylesheet" href="style/default.scss">
     <link rel="icon" type="image/svg" href="./images/calculator_favicon.svg">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="js/sha3.js"></script>
     <script type="text/javascript">
@@ -71,12 +72,12 @@
                         <?php
                         if ($login) {
                             echo '
-                        <li>
-                            <a href="add_itemset.php">Add item</a>
-                        </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
-                        </li>
+                            <li>
+                                <a href="add_itemset.php">Add item</a>
+                            </li>
+                            <li>
+                                <a href="logout.php">Logout</a>
+                            </li>
                         ';
                         }
                         ?>
@@ -139,6 +140,5 @@
     });
 </script>
 <script src="./js/navbar.js"></script>
-
 
 </html>
