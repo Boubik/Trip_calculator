@@ -55,28 +55,59 @@
 
         <?php
         if (isset($user_is_taken) and $user_is_taken) {
-            echo "Username is already taken. ";
+            echo '<script>alert("Username is already taken.")</script>';
         }
         if (isset($short_password) and $short_password) {
-            echo "Password need to be at least 6 characters. ";
+            echo '<script>alert("Password need to be at least 6 characters.")</script>';
         }
         if (isset($password_is_not_same) and $password_is_not_same) {
-            echo "Passwords need to be same. ";
+            echo '<script>alert("Passwords need to be same.")</script>';
         }
-        echo "<div class=\"login-wrap\">
-                    <h2>Login</h2>
+        echo '
+            <div class="center">
+                <h1>Register</h1>
+                <form onsubmit="changePasswords()" method="POST" action="">
+                
+                    <div class="txt_field">
+                        <input type="text" id="username" name="username" placeholder="Username" value="">                                
+                        <span></span>
+                        <label>Username</label>
+                    </div>
 
-                    <form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">
-                        <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">
-                        <input type=\"password\" id=\"password1\" name=\"password1\" placeholder=\"Password\">
-                        <input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"Repeat password\">
-                        <button type=\"submit\" name=\"submit\" value=\"Register\">Sign Up</button>
-                        <a href=\"index.php\"><p> Already have an account? Login! </p></a>
-                    </form>
+                    <div class="txt_field">
+                        <input type="password" id="password1" name="password1" placeholder="Password">
+                        <span></span>
+                        <label>Password</label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="password" id="password2" name="password2" placeholder="Repeat password">
+                        <span></span>
+                        <label>Password</label>
+                    </div>
 
-              </div>";
+                    <input type="submit" name="submit" value="Register"></input>
+                    <div class="signup_link">
+                    Already a member? <a href="index.php"> Login</a>
+                    </div>
+                </form>
+
+            </div>';
         ?>
     </section>
 </body>
+
+<script>
+    function myalert_username() {
+        alert("Username is already taken.");
+    }
+
+    function myalert_password_6ch() {
+        alert("Password need to be at least 6 characters.");
+    }
+
+    function myalert_password_same() {
+        alert("Passwords need to be same.");
+    }
+</script>
 
 </html>
