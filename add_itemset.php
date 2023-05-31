@@ -17,25 +17,60 @@
     }
     ?>
 
-    <header>
-        <h1><a href="/">Split calculator</a></h1>
-    </header>
-
-    <br>
-
     <section>
+        <section class="navigation">
+            <div class="nav-container">
+                <div class="brand">
+                    <img src="./images/icons8-calculator.svg" alt="">
+                    <a href="index.php">Split-Calculator</a>
+                </div>
+
+                <nav>
+                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="index.php">Home</a>
+                        </li>
+                        <li>
+                            <a href="index.php">About</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                        </li>
+                        <li>
+                            <a href="index.php">Contact</a>
+                        </li>
+                        <li>
+                            <a href="add_itemset.php">Add item</a>
+                        </li>
+                        <li>
+                            <a href="logout.php">Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </section>
         <div class='container'>
             <?php
             if (isset($_POST["submit"])) {
                 $id = add_item_set($conn, $_POST["name"], $_SESSION["username"]);
                 header("Location: view.php?id=" . $id);
             }
-            echo "<form method=\"POST\" action=\"\">";
-            echo "<label for=\"fname\">Name:</label>";
-            echo "<input type=\"text\" name=\"name\" placeholder=\"Item price\" value=\"\">";
-            echo "<br>";
-            echo "<input type=\"submit\" name=\"submit\" value=\"Add\">";
-            echo "</form>";
+            echo '
+            <div class="center">
+                <form method="POST" action="">
+                    <div class="txt_field">
+                            <input type="text" name="name" placeholder="Item price" value="">                             
+                            <span></span>
+                        <label>Name</label>
+                    </div>
+                    <input type="submit" name="submit" value="Add">
+                    <div class="signup_link">
+                    </div>
+                </form>
+            </div>
+            ';
             ?>
         </div>
     </section>

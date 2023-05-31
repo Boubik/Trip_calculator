@@ -51,23 +51,23 @@
             <div class="nav-container">
                 <div class="brand">
                     <img src="./images/icons8-calculator.svg" alt="">
-                    <a href="#!">Split-Calculator</a>
+                    <a href="index.php">Split-Calculator</a>
                 </div>
 
                 <nav>
                     <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
                     <ul class="nav-list">
                         <li>
-                            <a href="#!">Home</a>
+                            <a href="index.php">Home</a>
                         </li>
                         <li>
-                            <a href="#!">About</a>
+                            <a href="index.php">About</a>
                         </li>
                         <li>
                             <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
                         </li>
                         <li>
-                            <a href="#!">Contact</a>
+                            <a href="index.php">Contact</a>
                         </li>
                         <?php
                         if ($login) {
@@ -91,9 +91,33 @@
                 $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
                 $rows = select($conn, $sql);
 
+                echo '
+                    <div class="center" style="max-height: 650px; width: 750px; overflow-y: auto;">
+                        <table>
+                            <thead>
+                                <h1>TRIPS</h1>
+                            </thead>
+                            
+                            <tbody>';
+
                 foreach ($rows as $row) {
-                    echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
+                    echo '
+                                    <tr>
+                                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></td>
+                                    </tr>';
                 }
+
+                for ($i = 1; $i <= 100; $i++) {
+                    echo '
+                                    <tr>
+                                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a></td>
+                                    </tr>';
+                }
+
+                echo '
+                            </tbody>
+                        </table>
+                ';
             } else {
                 echo
                 '
