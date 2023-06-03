@@ -23,6 +23,34 @@
 </head>
 
 <body>
+    <header>
+        <section class="navigation">
+            <div class="nav-container">
+                <div class="brand">
+                    <img src="./images/icons8-calculator.svg" alt="">
+                    <a href="index.php">Split-Calculator</a>
+                </div>
+
+                <nav>
+                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="index.php">Home</a>
+                        </li>
+                        <li>
+                            <a href="index.php">About</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                        </li>
+                        <li>
+                            <a href="index.php">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </header>
 
     <?php
     include "functions.php";

@@ -23,6 +23,8 @@
 
 </head>
 
+
+
 <body>
     <?php
     include "functions.php";
@@ -45,8 +47,7 @@
         $login = false;
     }
     ?>
-
-    <main>
+    <header>
         <section class="navigation">
             <div class="nav-container">
                 <div class="brand">
@@ -58,16 +59,16 @@
                     <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
                     <ul class="nav-list">
                         <li>
-                            <a href="index.php">Home</a>
+                            <a href="#">Home</a>
                         </li>
                         <li>
-                            <a href="index.php">About</a>
+                            <a href="#">About</a>
                         </li>
                         <li>
                             <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
                         </li>
                         <li>
-                            <a href="index.php">Contact</a>
+                            <a href="#">Contact</a>
                         </li>
                         <?php
                         if ($login) {
@@ -85,73 +86,83 @@
                 </nav>
             </div>
         </section>
-        <section>
-            <?php
-            if ($login) {
-                $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
-                $rows = select($conn, $sql);
+    </header>
 
+    <main>
+
+
+
+
+
+        <?php
+        if ($login) {
+            $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
+            $rows = select($conn, $sql);
+
+            echo '
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <h1 class="heading">TRIPS</h1>
+                        </thead>
+                        
+                        <tbody>';
+
+            foreach ($rows as $row) {
                 echo '
-                    <div class="center" style="max-height: 650px; width: 750px; overflow-y: auto;">
-                        <table>
-                            <thead>
-                                <h1>TRIPS</h1>
-                            </thead>
-                            
-                            <tbody>';
+                    <tr>
+                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></td>
+                    </tr>
+                    ';
+            }
 
-                foreach ($rows as $row) {
-                    echo '
-                                    <tr>
-                                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></td>
-                                    </tr>';
-                }
 
-                for ($i = 1; $i <= 100; $i++) {
-                    echo '
-                                    <tr>
-                                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a></td>
-                                    </tr>';
-                }
-
+            for ($i = 1; $i <= 20; $i++) {
                 echo '
+                    <tr>
+                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a></td>
+                    </tr>';
+            }
+
+            echo '
                             </tbody>
                         </table>
-                ';
-            } else {
-                echo
-                '
-                    <div class="center">
-                        <h1>Login</h1>
-                        
-                        <form onsubmit="changePasswords()" method="POST" action="">
-                        
-                            <div class="txt_field">
-                                <input type="text" id="username" name="username" placeholder="Username" value="">                                
-                                <span></span>
-                                <label>Username</label>
-                            </div>
-
-                            <div class="txt_field">
-                                <input type="password" id="password" name="password" placeholder="Password">
-                                <span></span>
-                                <label>Password</label>
-                            </div>
-
-                            <input type="submit" name="submit" value="Login">
-                            <div class="signup_link">
-                            Not a member? <a href="register.php"> Sign-Up</a>
-                            </div>
-
-                        </form>
-
                     </div>
                 ';
-            }
-            ?>
-        </section>
+        } else {
+            echo
+            '
+                <div class="center">
+                    <h1>Login</h1>
+                    
+                    <form onsubmit="changePasswords()" method="POST" action="">
+                    
+                        <div class="txt_field">
+                            <input type="text" id="username" name="username" placeholder="Username" value="">                                
+                            <span></span>
+                            <label>Username</label>
+                        </div>
+
+                        <div class="txt_field">
+                            <input type="password" id="password" name="password" placeholder="Password">
+                            <span></span>
+                            <label>Password</label>
+                        </div>
+
+                        <input type="submit" name="submit" value="Login">
+                        <div class="signup_link">
+                        Not a member? <a href="register.php"> Sign-Up</a>
+                        </div>
+
+                    </form>
+                </div>
+            ';
+        }
+        ?>
+
     </main>
 </body>
+
 
 <script type="text/javascript">
     $('.form-signin').submit(function() {

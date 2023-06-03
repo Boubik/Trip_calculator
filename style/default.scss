@@ -1,18 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap");
 
-* {
+html,
+main {
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
 }
+
 body {
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   background: linear-gradient(120deg, #2980b9, #8e44ad);
-  height: 100vh;
-  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
+
+footer {
+  background: #333;
+  color: white;
+  padding: 0.5em;
+  margin-top: 5rem;
+}
+
 .center {
   position: absolute;
   top: 50%;
@@ -286,27 +298,29 @@ nav ul li ul li a {
   }
 }
 
+.table-container {
+  width: 350px;
+  height: auto; /* Adjust the height as needed */
+  margin: 0 auto; /* Center horizontally */
+}
+
 table {
-  width: 750px;
+  width: 100%; /* Table width set to 100% */
   border-collapse: collapse;
-  border: 0.5px solid #000000;
+  margin-bottom: 2.5rem;
 }
 
 tr:nth-child(odd) {
-  background: linear-gradient(45deg, #4199fe, #74b4fe);
+  background-color: rgba(255, 255, 255, 0.85);
 }
-
-th {
-  background: #2581dc;
-  color: #2581dc;
-  font-weight: bold;
+tr:nth-child(even) {
+  background: linear-gradient(45deg, #4199fe, #74b4fe);
 }
 
 td,
 th {
   padding: 10px;
   border: 0.5px solid #000000;
-  text-align: left;
   font-size: 20px;
   text-align: center;
 }
