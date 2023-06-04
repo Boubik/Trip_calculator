@@ -298,85 +298,61 @@ nav ul li ul li a {
   }
 }
 
-.table-container {
+.trips-vypis {
   width: 350px;
-  height: auto; /* Adjust the height as needed */
-  margin: 0 auto; /* Center horizontally */
+  height: auto;
+  margin: 0 auto;
 }
 
-table {
-  width: 100%; /* Table width set to 100% */
-  border-collapse: collapse;
-  margin-bottom: 2.5rem;
+///TRIPS
+.list {
+  width: 410px;
+  margin: 0 auto;
+}
+.list ol {
+  list-style-type: none;
+  margin: 0;
+  margin-left: 1em;
+  padding: 0;
+  counter-reset: li-counter;
+}
+.list ol li {
+  position: relative;
+  margin-bottom: 1.5em;
+  padding: 0.5em;
+  padding-left: 58px;
 }
 
-tr:nth-child(odd) {
-  background-color: rgba(255, 255, 255, 0.85);
-}
-tr:nth-child(even) {
-  background: linear-gradient(45deg, #4199fe, #74b4fe);
-}
-
-td,
-th {
-  padding: 10px;
-  border: 0.5px solid #000000;
+.list a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
   font-size: 20px;
+}
+
+.list li:hover {
+  box-shadow: inset -1em 0 #2691d9;
+  -webkit-transition: box-shadow 0.5s; /* For Safari 3.1 to 6.0 */
+  transition: box-shadow 0.5s;
+  transform: scale(1.1);
+}
+
+.list ol li:before {
+  position: absolute;
+  top: -0.3em;
+  left: -0.5em;
+  width: 1.8em;
+  height: 1.2em;
+  font-size: 2em;
+  line-height: 1.2;
+  font-weight: bold;
   text-align: center;
-}
-
-tr td a {
-  color: rgb(0, 0, 0);
-}
-
-/* 
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
-@media only screen and (max-width: 760px),
-  (min-device-width: 768px) and (max-device-width: 1024px) {
-  table {
-    width: 100%;
-  }
-
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
-
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
-  tr {
-    border: 2px solid #000000;
-  }
-
-  td {
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-  }
-
-  td:before {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-    /* Label the data */
-    content: attr(data-column);
-
-    color: #000;
-    font-weight: bold;
-  }
+  color: white;
+  background-color: #2691d9;
+  transform: rotate(-20deg);
+  -ms-transform: rotate(-20deg);
+  -webkit-transform: rotate(-20deg);
+  z-index: 99;
+  overflow: hidden;
+  content: counter(li-counter);
+  counter-increment: li-counter;
 }

@@ -99,37 +99,66 @@
             $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
             $rows = select($conn, $sql);
 
-            echo '
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <h1 class="heading">TRIPS</h1>
-                        </thead>
-                        
-                        <tbody>';
+            // echo '
+            //     <div class="table-container">
+            //         <table>
+            //             <thead>
+            //                 <h1 class="heading">TRIPS</h1>
+            //             </thead>
+
+            //             <tbody>';
+
+            // foreach ($rows as $row) {
+            //     echo '
+            //         <tr>
+            //             <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></td>
+            //         </tr>
+            //         ';
+            // }
+
+
+            // for ($i = 1; $i <= 20; $i++) {
+            //     echo '
+            //         <tr>
+            //             <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a></td>
+            //         </tr>';
+            // }
+
+            // echo '
+            //                 </tbody>
+            //             </table>
+            //         </div>
+            //     ';
+
+            /////
+            echo
+            '
+                <h1 class="heading">TRIPS</h1>
+                <div class="trips-vypis">
+                    <div class="list">
+                        <ol>
+                ';
 
             foreach ($rows as $row) {
                 echo '
-                    <tr>
-                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></td>
-                    </tr>
+                        <li><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></li>
                     ';
             }
-
-
             for ($i = 1; $i <= 20; $i++) {
                 echo '
-                    <tr>
-                        <td><a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a></td>
-                    </tr>';
+                    <li>
+                        <a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
+                    </li>';
             }
 
-            echo '
-                            </tbody>
-                        </table>
+            echo '   
+                        </ol>
                     </div>
-                ';
-        } else {
+                </div>
+                    ';
+        }
+        ////
+        else {
             echo
             '
                 <div class="center">
