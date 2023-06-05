@@ -44,7 +44,10 @@
                                 <a href="add_user.php?id=" . filter_input(INPUT_GET, "id") . "">Add user</a>
                             </li>
                             <li>
-                                <a href="add_item.php?id=" . filter_input(INPUT_GET, "id") . "">Add new item</a>                            
+                                <a href="add_item.php?id=" . filter_input(INPUT_GET, "id") . "">Add item</a>                            
+                            </li>
+                            <li>
+                                <a href="logout.php">Logout</a>
                             </li>
                         </ul>
                     </nav>
@@ -112,7 +115,7 @@
                 <?php
                 $dataPeople = array();
                 $people_with_currencys = array();
-                foreach ($people as $row) {
+                foreach ($people_with_currencys as $row) {   //$people -> $people_with_currencys
                     echo "<tr>";
                     echo "<td>";
                     echo $row["name"];
