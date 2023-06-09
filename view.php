@@ -38,13 +38,13 @@
                                 <a href="index.php">Contact</a>
                             </li>
                             <li>
-                                <a href="view.php?id=" . filter_input(INPUT_GET, "id") . "&share=" . $_SESSION["username"] . "">Share</a>
+                                <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
                             </li>
                             <li>
-                                <a href="add_user.php?id=" . filter_input(INPUT_GET, "id") . "">Add user</a>
+                                <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
                             </li>
                             <li>
-                                <a href="add_item.php?id=" . filter_input(INPUT_GET, "id") . "">Add item</a>                            
+                                <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add item</a>                            
                             </li>
                             <li>
                                 <a href="logout.php">Logout</a>
