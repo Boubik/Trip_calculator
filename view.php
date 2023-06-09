@@ -38,6 +38,7 @@
             <h1 id="ppl" style="margin-top: 50px;">People:</h1>
             <?php
             $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
+            $people = array();
             $currancys = select($conn, $sql);
             foreach ($currancys as $currancy) {
                 $currancy = $currancy["currency_name"];
