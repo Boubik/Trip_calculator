@@ -4,60 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | View</title>
-    <link rel="stylesheet" href="style/default.scss">
+    <link rel="stylesheet" href="style/default.css">
 </head>
 
 <body>
     <header>
+        <h1><a href="index.php">Split calculator</a></h1>
         <?php
         include "functions.php";
         $conn = connect_db();
         session_start();
-
-        echo '
-            <section class="navigation">
-                <div class="nav-container">
-                    <div class="brand">
-                        <img src="./images/icons8-calculator.svg" alt="">
-                        <a href="index.php">Split-Calculator</a>
-                    </div>
-
-                    <nav>
-                        <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
-                        <ul class="nav-list">
-                            <li>
-                                <a href="index.php">Home</a>
-                            </li>
-                            <li>
-                                <a href="index.php">About</a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                            </li>
-                            <li>
-                                <a href="index.php">Contact</a>
-                            </li>
-                            <li>
-                                <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
-                            </li>
-                            <li>
-                                <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-                            </li>
-                            <li>
-                                <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add item</a>                            
-                            </li>
-                            <li>
-                                <a href="logout.php">Logout</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </section>
-        ';
+        echo "<a href=\"view.php?id=" . filter_input(INPUT_GET, "id") . "&share=" . $_SESSION["username"] . "\">Share</a>";
+        echo "<a href=\"add_user.php?id=" . filter_input(INPUT_GET, "id") . "\">Add user</a>";
+        echo "<a href=\"add_item.php?id=" . filter_input(INPUT_GET, "id") . "\">Add new item</a>";
         ?>
         <script src="js/sorttable.js"></script>
         <script src="js/chart.js"></script>
     </header>
+
+    <br>
 
     <aside>
         <?php
@@ -115,7 +80,7 @@
                 <?php
                 $dataPeople = array();
                 $people_with_currencys = array();
-                foreach ($people_with_currencys as $row) {   //$people -> $people_with_currencys
+                foreach ($people as $row) {
                     echo "<tr>";
                     echo "<td>";
                     echo $row["name"];
