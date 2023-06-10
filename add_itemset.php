@@ -61,7 +61,7 @@
             <div class="center">
                 <form method="POST" action="">
                     <div class="txt_field">
-                            <input type="text" name="name" placeholder="Item price" value="">                             
+                            <input type="text" name="name" placeholder="Name of the trip" value="">                             
                             <span></span>
                         <label>Name</label>
                     </div>

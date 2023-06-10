@@ -89,48 +89,41 @@
     </header>
 
     <main>
+        <div class="container">
+            <?php
+            if ($login) {
+                $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
+                $rows = select($conn, $sql);
 
-
-
-
-
-        <?php
-        if ($login) {
-            $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
-            $rows = select($conn, $sql);
-
-            echo
-            '
+                echo
+                '
                 <h1 class="heading">TRIPS</h1>
                 <div class="trips-vypis">
-                    <div class="list">
-                        <ol>
             ';
-            //trochu sus, možná změnit (double odkaz v 1 divu)
-            foreach ($rows as $row) {
-                echo ' 
-                        <li onclick="location.href=\'view.php?id=' . str_replace(" ", "%20", $row["id"]) . '\'" style="cursor: pointer;"><a id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a></li>
+                //trochu sus, možná změnit (double odkaz v 1 divu)
+                foreach ($rows as $row) {
+                    echo ' 
+                        <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a>
                     ';
-            }
+                }
 
-            // for ($i = 1; $i <= 200; $i++) {
-            //     echo '
-            //         <li>
-            //             <a id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
-            //         </li>';
-            // }
+                for ($i = 1; $i <= 200; $i++) {
+                    echo '
+                        <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
+                        ';
+                }
 
-            echo
-            '   
+                echo
+                '   
                         </ol>
                     </div>
                 </div>
             ';
-        }
-        ////
-        else {
-            echo
-            '
+            }
+            ////
+            else {
+                echo
+                '
                 <div class="center">
                     <h1>Login</h1>
                     
@@ -156,9 +149,9 @@
                     </form>
                 </div>
             ';
-        }
-        ?>
-
+            }
+            ?>
+        </div>
     </main>
 </body>
 

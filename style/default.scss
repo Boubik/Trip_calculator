@@ -297,60 +297,20 @@ nav ul li ul li a {
 }
 
 .trips-vypis {
-  width: 350px;
-  height: auto;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(150px);
+  gap: 20px;
+  margin-bottom: 3%;
 }
 
-///TRIPS
-.list {
-  width: 410px;
-  margin: 0 auto;
-}
-.list ol {
-  list-style-type: none;
-  margin: 0;
-  margin-left: 1em;
-  padding: 0;
-  counter-reset: li-counter;
-}
-.list ol li {
-  position: relative;
-  margin-bottom: 1.5em;
-  padding: 0.5em;
-  padding-left: 58px;
-}
-
-.list a {
-  text-decoration: none;
-  color: rgb(255, 255, 255);
-  font-size: 20px;
-}
-
-.list li:hover {
-  box-shadow: inset -1em 0 #2691d9;
-  -webkit-transition: box-shadow 0.5s; /* For Safari 3.1 to 6.0 */
-  transition: box-shadow 0.5s;
-  transform: scale(1.1);
-}
-
-.list ol li:before {
-  position: absolute;
-  top: -0.3em;
-  left: -0.5em;
-  width: 1.8em;
-  height: 1.2em;
-  font-size: 2em;
-  line-height: 1.2;
-  font-weight: bold;
-  text-align: center;
+.child {
+  padding: 20px;
   color: white;
-  background-color: #2691d9;
-  transform: rotate(-20deg);
-  -ms-transform: rotate(-20deg);
-  -webkit-transform: rotate(-20deg);
-  z-index: 99;
-  overflow: hidden;
-  content: counter(li-counter);
-  counter-increment: li-counter;
+  background-color: #7ba6cb;
+}
+
+.container {
+  width: 80%; /* Adjust the width as needed */
+  margin: 0 auto;
 }
