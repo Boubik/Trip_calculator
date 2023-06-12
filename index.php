@@ -107,11 +107,11 @@
                     ';
                 }
 
-                for ($i = 1; $i <= 200; $i++) {
-                    echo '
-                        <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
-                        ';
-                }
+                // for ($i = 1; $i <= 200; $i++) {
+                //     echo '
+                //         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
+                //         ';
+                // }
 
                 echo
                 '   

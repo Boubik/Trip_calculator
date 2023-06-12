@@ -68,9 +68,10 @@
             $_SESSION["username"] = filter_input(INPUT_GET, "share");
         }
         ?>
-        <div class="main">
+        <div class="container">
 
-            <h1 id="ppl" style="margin-top: 50px;">People:</h1>
+            <h1 class="" id="ppl">People:</h1>
+
             <?php
             $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
             $people = array();
@@ -97,73 +98,33 @@
             $sql = "SELECT SUM(`item`.`price`) as `sum`, `currency`.`name` as 'currency', `category`.`name` as 'category' FROM `category` INNER JOIN `item` on `item`.`category_name` = `category`.`name` INNER JOIN `item_set` on `item`.`item_set_id` = `item_set`.`id` INNER JOIN `currency` ON `currency`.`name` = `item`.`currency_name` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `currency`.`name`, `category`.`name` ORDER BY 'currency' ASC, `sum` DESC";
             $category = select($conn, $sql);
             ?>
-            <table id='second'>
-                <tr>
-                    <th>
-                        Who
-                    </th>
-                    <th>
-                        Before calculation
-                    </th>
-                    <th>
-                        After calculation
-                    </th>
-                </tr>
-                <tr>
+
+            <table id='second' class="styled-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Who
+                        </th>
+                        <th>
+                            Before calculation
+                        </th>
+                        <th>
+                            After calculation
+                        </th>
+                    </tr>
+                </thead>
+                <!-- <tr>
                     <td id='empty' colspan="3"></td>
-                </tr>
+                </tr> -->
 
-                <?php
-                $dataPeople = array();
-                $people_with_currencys = array();
-                foreach ($people as $row) {
-                    echo "<tr>";
-                    echo "<td>";
-                    echo $row["name"];
-                    echo "</td>";
-
-                    echo "<td>";
-                    if (is_null($row["sum"])) {
-                        echo "0";
-                    } else {
-                        echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
-                    }
-                    echo "</td>";
-                    echo "<td>";
-                    $people_with_currencys[$row["currency"]][$row["name"]] = user_spent_after_calculation($conn, filter_input(INPUT_GET, "id"), $row["currency"], $row["name"]);
-                    $dataPeople[] = array("label" => $row["name"], "value" => $people_with_currencys[$row["currency"]][$row["name"]]);
-                    echo number_format($people_with_currencys[$row["currency"]][$row["name"]], 2, ",", " ") . " " . $row["currency"];
-                    $people_with_currencys[$row["currency"]][$row["name"]] = $row["sum"] - $people_with_currencys[$row["currency"]][$row["name"]];
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                ?>
-
-                <h1 id="ppl" style="margin-top: 50px;">Category:</h1>
-                <table id='second'>
-                    <tr>
-                        <th>
-                            Category
-                        </th>
-                        <th>
-                            Everyone price
-                        </th>
-                        <th>
-                            My Price
-                        </th>
-                    </tr>
-                    <tr>
-                        <td id='empty' colspan="3"></td>
-                    </tr>
+                <tbody>
                     <?php
-                    $dataCategory = array();
-                    $sumAll = array();
-                    foreach ($category as $row) {
-                        $sumAll[$row["currency"]]["everyone"] = 0;
-                        $sumAll[$row["currency"]]["me"] = 0;
+                    $dataPeople = array();
+                    $people_with_currencys = array();
+                    foreach ($people as $row) {
                         echo "<tr>";
                         echo "<td>";
-                        echo $row["category"];
+                        echo $row["name"];
                         echo "</td>";
 
                         echo "<td>";
@@ -171,38 +132,89 @@
                             echo "0";
                         } else {
                             echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
-                            $sumAll[$row["currency"]]["everyone"] += $row["sum"];
                         }
                         echo "</td>";
-                        echo "<th>";
-                        $sum = 0;
-                        foreach (get_my_price_per_category($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"], $row["category"], $row["currency"]) as $item) {
-                            $sum += ($item["price"] / count_users_on_item($conn, $item["id"]));
-                        }
-                        $sumMe = $sum;
-                        $sumAll[$row["currency"]]["me"] += $sum;
-                        $dataCategory[] = array("label" => $row["category"], "value" => $sum);
-                        echo number_format($sum, 2, ",", " ") . " " . $row["currency"];
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    echo "<tr>";
-                    echo "<td id='empty' colspan=\"3\"></td>";
-                    echo "</tr>";
-                    foreach ($sumAll as $currency => $sum) {
-                        echo "<tr>";
                         echo "<td>";
-                        echo "All " . $currency;
-                        echo "</td>";
-                        echo "<td>";
-                        echo number_format($sum["everyone"], 2, ",", " ") . " " . $currency;
-                        echo "</td>";
-                        echo "<td>";
-                        echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
+                        $people_with_currencys[$row["currency"]][$row["name"]] = user_spent_after_calculation($conn, filter_input(INPUT_GET, "id"), $row["currency"], $row["name"]);
+                        $dataPeople[] = array("label" => $row["name"], "value" => $people_with_currencys[$row["currency"]][$row["name"]]);
+                        echo number_format($people_with_currencys[$row["currency"]][$row["name"]], 2, ",", " ") . " " . $row["currency"];
+                        $people_with_currencys[$row["currency"]][$row["name"]] = $row["sum"] - $people_with_currencys[$row["currency"]][$row["name"]];
                         echo "</td>";
                         echo "</tr>";
                     }
                     ?>
+                </tbody>
+
+
+                <h1 id="ppl" class="">Category:</h1>
+                <table id='second' class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Everyone price
+                            </th>
+                            <th>
+                                My Price
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                        <td id='empty' colspan="3"></td>
+                    </tr> -->
+
+                        <?php
+                        $dataCategory = array();
+                        $sumAll = array();
+                        foreach ($category as $row) {
+                            $sumAll[$row["currency"]]["everyone"] = 0;
+                            $sumAll[$row["currency"]]["me"] = 0;
+                            echo "<tr>";
+                            echo "<td>";
+                            echo $row["category"];
+                            echo "</td>";
+
+                            echo "<td>";
+                            if (is_null($row["sum"])) {
+                                echo "0";
+                            } else {
+                                echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
+                                $sumAll[$row["currency"]]["everyone"] += $row["sum"];
+                            }
+                            echo "</td>";
+                            echo "<td>";
+                            $sum = 0;
+                            foreach (get_my_price_per_category($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"], $row["category"], $row["currency"]) as $item) {
+                                $sum += ($item["price"] / count_users_on_item($conn, $item["id"]));
+                            }
+                            $sumMe = $sum;
+                            $sumAll[$row["currency"]]["me"] += $sum;
+                            $dataCategory[] = array("label" => $row["category"], "value" => $sum);
+                            echo number_format($sum, 2, ",", " ") . " " . $row["currency"];
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                        echo "<tr>";
+                        echo "<td id='empty' colspan=\"3\"></td>";
+                        echo "</tr>";
+                        foreach ($sumAll as $currency => $sum) {
+                            echo "<tr>";
+                            echo "<td>";
+                            echo "All " . $currency;
+                            echo "</td>";
+                            echo "<td>";
+                            echo number_format($sum["everyone"], 2, ",", " ") . " " . $currency;
+                            echo "</td>";
+                            echo "<td>";
+                            echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
                 </table>
 
                 <section>
@@ -246,7 +258,7 @@
                 </script>-->
 
 
-                <h1 id="ppl" style="margin-top: 50px;">Calated payback:</h1>
+                <h1 id="ppl" style="margin-top: 50px;">Calculated payback:</h1>
                 <table id='second'>
                     <tr>
                         <th>
