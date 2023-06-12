@@ -18,7 +18,7 @@
     ?>
 
     <header>
-        <h1><a href="/">Split calculator</a></h1>
+        <h1><a href="index.php">Split calculator</a></h1>
     </header>
 
     <br>
