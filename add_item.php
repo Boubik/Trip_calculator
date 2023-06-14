@@ -154,6 +154,15 @@
             echo "<label for=\"fname\"> or </label>";
             echo "<input type=\"text\" name=\"currency2\" placeholder=\"Currency\" value=\"\">";
             echo "</div>";
+
+            echo
+            '
+            <div class="txt_field">
+            <input type="text" name="currency2" placeholder="Currency" value="">     
+            <span></span>
+            <label for="fname">/label>
+            </div>
+            ';
             ////////////////////////////////////////////////////////////////////////////////////////////
             echo
             '
