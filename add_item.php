@@ -16,40 +16,39 @@
         header("Location: index.php");
     }
     ?>
-
-    <section>
-        <section class="navigation">
-            <div class="nav-container">
-                <div class="brand">
-                    <img src="./images/icons8-calculator.svg" alt="">
-                    <a href="index.php">Split-Calculator</a>
-                </div>
-
-                <nav>
-                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
-                    <ul class="nav-list">
-                        <li>
-                            <a href="index.php">Home</a>
-                        </li>
-                        <li>
-                            <a href="index.php">About</a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                        </li>
-                        <li>
-                            <a href="index.php">Contact</a>
-                        </li>
-                        <li>
-                            <a href="add_itemset.php">Add item</a>
-                        </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
-                        </li>
-                    </ul>
-                </nav>
+    <section class="navigation">
+        <div class="nav-container">
+            <div class="brand">
+                <img src="./images/icons8-calculator.svg" alt="">
+                <a href="index.php">Split-Calculator</a>
             </div>
-        </section>
+
+            <nav>
+                <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.php">Home</a>
+                    </li>
+                    <li>
+                        <a href="index.php">About</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                    </li>
+                    <li>
+                        <a href="index.php">Contact</a>
+                    </li>
+                    <li>
+                        <a href="add_itemset.php">Add item</a>
+                    </li>
+                    <li>
+                        <a href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <main>
 
         <!-- echo
         '
@@ -85,7 +84,8 @@
             echo
             '
                 <form method="POST" action="">
-                <label for="fname" style="left: 5px; top: -5px">Payer: </label>
+                <div>
+                <label for="fname"">Payer: </label>
                 <select name="user">
                 ';
 
@@ -101,6 +101,12 @@
                 $i++;
             }
             echo "</select>";
+            echo "</div>";
+            ////////////////////////////////////////////////////////////////////////////////////////////ú
+            echo '
+            <div>
+            <label for="fname">Category</label>
+            ';
             if ((bool)count(get_categorys_for_item_set($conn, filter_input(INPUT_GET, "id")))) {
                 echo "<select name=\"category\">";
 
@@ -117,14 +123,20 @@
                 }
 
                 echo "</select>";
-
                 echo "<label for=\"fname\"> or </label>";
             }
-
             echo
             '
-                <label for="fname">Currency</label>
-                <select name="currency">';
+            <input type="text" name="category2" placeholder="Category" value="">
+            </div>
+            ';
+            ////////////////////////////////////////////////////////////////////////////////////////////ú
+            echo
+            '
+            <div>
+            <label for="fname">Currency</label>
+            <select name="currency">
+            ';
             if ((bool)count(get_currency($conn))) {
                 $i = 0;
                 foreach (get_currency($conn) as $row) {
@@ -139,21 +151,12 @@
                 }
             }
             echo "</select>";
-
-
             echo "<label for=\"fname\"> or </label>";
             echo "<input type=\"text\" name=\"currency2\" placeholder=\"Currency\" value=\"\">";
-            echo "<br>";
-
-
+            echo "</div>";
+            ////////////////////////////////////////////////////////////////////////////////////////////
             echo
             '
-            <div class="txt_field">
-            <input type="text" name="category2" placeholder="Category" value="">
-            <span></span>
-            <label>Category</label>
-            </div>
-
             <div class="txt_field">
             <input type="number" min="0" name="price" placeholder="Price" value="">
             <span></span>
@@ -173,6 +176,7 @@
             ';
             ?>
         </div>
+    </main>
 </body>
 
 </html>
