@@ -83,11 +83,11 @@
 
             echo
             '
-                <form method="POST" action="">
-                <div>
-                <label for="fname"">Payer: </label>
-                <select name="user">
-                ';
+            <form method="POST" action="">
+            <div>
+            <label for="fname"">Payer</label>
+            <select name="user">
+            ';
 
             $i = 0;
             foreach (get_posible_payers($conn, filter_input(INPUT_GET, "id")) as $row) {
@@ -123,13 +123,8 @@
                 }
 
                 echo "</select>";
-                echo "<label for=\"fname\"> or </label>";
             }
-            echo
-            '
-            <input type="text" name="category2" placeholder="Category" value="">
-            </div>
-            ';
+            echo "</div>";
             ////////////////////////////////////////////////////////////////////////////////////////////ú
             echo
             '
@@ -151,21 +146,20 @@
                 }
             }
             echo "</select>";
-            echo "<label for=\"fname\"> or </label>";
-            echo "<input type=\"text\" name=\"currency2\" placeholder=\"Currency\" value=\"\">";
             echo "</div>";
-
-            echo
-            '
-            <div class="txt_field">
-            <input type="text" name="currency2" placeholder="Currency" value="">     
-            <span></span>
-            <label for="fname">/label>
-            </div>
-            ';
             ////////////////////////////////////////////////////////////////////////////////////////////
             echo
             '
+            <div class="txt_field">
+            <input type="text" name="category2" placeholder="Category" value="">     
+            <span></span>
+            <label for="fname">Category</label>
+            </div>
+            <div class="txt_field">
+            <input type="text" name="currency2" placeholder="Currency" value="">     
+            <span></span>
+            <label for="fname">Currency</label>
+            </div>
             <div class="txt_field">
             <input type="number" min="0" name="price" placeholder="Price" value="">
             <span></span>

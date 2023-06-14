@@ -57,9 +57,7 @@
         <script src="js/chart.js"></script>
     </header>
 
-    <br>
-
-    <aside>
+    <main>
         <?php
         if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
             if (!isset($_GET["share"])) {
@@ -69,8 +67,6 @@
         }
         ?>
         <div class="container">
-
-            <h1 class="" id="ppl">People:</h1>
 
             <?php
             $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
@@ -100,6 +96,9 @@
             ?>
 
             <table id='second' class="styled-table">
+                <caption>
+                    <h1 class="heading" id="ppl" style="font-size: 40px">by People</h1>
+                </caption>
                 <thead>
                     <tr>
                         <th>
@@ -146,8 +145,10 @@
                 </tbody>
 
 
-                <h1 id="ppl" class="">Category:</h1>
                 <table id='second' class="styled-table">
+                    <caption>
+                        <h1 id="ppl" class="heading" style="font-size: 40px">by Category</h1>
+                    </caption>
                     <thead>
                         <tr>
                             <th>
@@ -198,7 +199,7 @@
                             echo "</tr>";
                         }
                         echo "<tr>";
-                        echo "<td id='empty' colspan=\"3\"></td>";
+                        // echo "<td id='empty' colspan=\"3\"></td>";
                         echo "</tr>";
                         foreach ($sumAll as $currency => $sum) {
                             echo "<tr>";
@@ -258,31 +259,32 @@
                 </script>-->
 
 
-                <h1 id="ppl" style="margin-top: 50px;">Calculated payback:</h1>
-                <table id='second'>
-                    <tr>
-                        <th>
-                            From
-                        </th>
-                        <th>
-                            To
-                        </th>
-                        <th>
-                            How much
-                        </th>
-                    </tr>
-                    <tr>
+                <table id='second' class="styled-table">
+                    <caption>
+                        <h1 id="ppl" class="heading" style="font-size: 40px">Calculated payback</h1>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                From
+                            </th>
+                            <th>
+                                To
+                            </th>
+                            <th>
+                                How much
+                            </th>
+                        </tr>
+                    </thead>
+                    <!-- <tr>
                         <td id='empty' colspan="3"></td>
-                    </tr>
-                    <?php
-
-                    ?>
+                    </tr> -->
                     <?php
                     $i = 0;
                     foreach ($people_with_currencys as $currency => $users_per_curency) {
                         if ($i != 0) {
                             echo "<tr>";
-                            echo "<td id='empty' colspan=\"3\"></td>";
+                            // echo "<td id='empty' colspan=\"3\"></td>";
                             echo "</tr>";
                         }
                         while (!all_have_same_number($users_per_curency)) {
@@ -316,46 +318,71 @@
                     }
                     ?>
                 </table>
-    </aside>
-    </div>
-    <br>
-    <h1 id="ppl" style="margin-top: 50px;">Items:</h1>
-    <table class="sortable">
-        <tr>
-            <th>price</th>
-            <th>One person</th>
-            <th>category</th>
-            <th>Paid</th>
-            <th>Will pay</th>
-            <th>note</th>
-            <?php
-            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                echo "<th>Control</th>";
-            }
-            ?>
-        </tr>
-        <tr>
-            <td id='empty' colspan="7"></td>
-        </tr>
 
-        <?php
-        $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
-        $rows = select($conn, $sql);
-        foreach ($rows as $row) {
-            echo "<tr>";
-            echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-            echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-            echo "<td>" . $row["category_name"] . "</td>";
-            echo "<td>" . $row["payer"] . "</td>";
-            echo "<td>" . $row["will_pay"] . "</td>";
-            echo "<td>" . $row["note"] . "</td>";
-            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\">Edit</a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\">Delete</a></td>";
-            }
-            echo " </tr>";
-        }
-        echo "owner is: " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
-        ?>
-    </table>
+                <table class="styled-table">
+                    <caption>
+                        <h1 id="ppl" class="heading" style="font-size: 40px">Items
+                            <?php
+                            echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
+                            ?>
+                        </h1>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>One person</th>
+                            <th>Category</th>
+                            <th>Paid</th>
+                            <th>Will pay</th>
+                            <th>Note</th>
+                            <?php
+                            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                                echo "<th colspan=\"2\">Control</th>";
+                            }
+                            ?>
+                        </tr>
+                    </thead>
+                    <!-- <tr>
+                        <td id='empty' colspan="7"></td>
+                    </tr> -->
+
+                    <?php
+                    $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
+                    $rows = select($conn, $sql);
+                    foreach ($rows as $row) {
+                        echo "<tr>";
+                        echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                        echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                        echo "<td>" . $row["category_name"] . "</td>";
+                        echo "<td>" . $row["payer"] . "</td>";
+                        echo "<td>" . $row["will_pay"] . "</td>";
+                        echo "<td>" . $row["note"] . "</td>";
+                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                            echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
+                        }
+                        echo " </tr>";
+                    }
+                    ?>
+                </table>
+        </div>
+    </main>
+    <script>
+        // Get the canvas elements
+        const peopleCanvas = document.getElementById("PeopleGraf");
+        const categoryCanvas = document.getElementById("CategoryGraf");
+
+        // Get the 2D rendering context for each canvas
+        const peopleCtx = peopleCanvas.getContext("2d");
+        const categoryCtx = categoryCanvas.getContext("2d");
+
+        // Draw your graphs using the canvas contexts
+        // Example code:
+        peopleCtx.fillStyle = "red";
+        peopleCtx.fillRect(0, 0, 100, 100);
+
+        categoryCtx.fillStyle = "blue";
+        categoryCtx.fillRect(0, 0, 100, 100);
+    </script>
+</body>
 
 </html>

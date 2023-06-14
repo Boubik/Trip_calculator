@@ -71,19 +71,19 @@
 
                 echo
                 '
-                    <div class="center">
-                    <form method="POST" action="">
-                    <div class="txt_field">
-                    <input type="text" name="username" placeholder="Name of the user" value="">                             
-                    <span></span>
-                    <label>Add user</label>
-                    </div>
-                    <input type="submit" name="submit" value="Add">
-                    <div class="signup_link">
-                    </div>
-                    </form>
-                    </div>
-                    ';
+                <div class="center">
+                <form method="POST" action="">
+                <div class="txt_field">
+                <input type="text" name="username" placeholder="Name of the user" value="">                             
+                <span></span>
+                <label>Add user</label>
+                </div>
+                <input type="submit" name="submit" value="Add">
+                <div class="signup_link">
+                </div>
+                </form>
+                </div>
+                ';
                 ?>
             </div>
         </section>
