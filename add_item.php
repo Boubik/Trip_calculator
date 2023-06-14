@@ -17,14 +17,55 @@
     }
     ?>
 
-    <header>
-        <h1><a href="index.php">Split calculator</a></h1>
-    </header>
-
-    <br>
-
     <section>
-        <div class='container'>
+        <section class="navigation">
+            <div class="nav-container">
+                <div class="brand">
+                    <img src="./images/icons8-calculator.svg" alt="">
+                    <a href="index.php">Split-Calculator</a>
+                </div>
+
+                <nav>
+                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="index.php">Home</a>
+                        </li>
+                        <li>
+                            <a href="index.php">About</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                        </li>
+                        <li>
+                            <a href="index.php">Contact</a>
+                        </li>
+                        <li>
+                            <a href="add_itemset.php">Add item</a>
+                        </li>
+                        <li>
+                            <a href="logout.php">Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+
+        <!-- echo
+        '
+            <form method="POST" action="">
+                <div class="txt_field">
+                    <input type="text" name="username" placeholder="Name of the user" value="">
+                    <span></span>
+                    <label>Add user</label>
+                </div>
+                <input type="submit" name="submit" value="Add">
+                <div class="signup_link">
+                </div>
+            </form>
+        '; -->
+
+        <div class='center'>
             <?php
             if (isset($_POST["submit"])) {
                 $array = array(
@@ -41,10 +82,12 @@
                 header("Location: add_users_to_item.php?id=" . filter_input(INPUT_GET, "id") . "&item_id=" . $item_id);
             }
 
-            echo "<form method=\"POST\" action=\"\">";
-
-            echo "<label for=\"fname\">Payer:</label>";
-            echo "<select name=\"user\">";
+            echo
+            '
+                <form method="POST" action="">
+                <label for="fname" style="left: 5px; top: -5px">Payer: </label>
+                <select name="user">
+                ';
 
             $i = 0;
             foreach (get_posible_payers($conn, filter_input(INPUT_GET, "id")) as $row) {
@@ -58,9 +101,6 @@
                 $i++;
             }
             echo "</select>";
-            echo "<br>";
-
-            echo "<label for=\"fname\">Category:</label>";
             if ((bool)count(get_categorys_for_item_set($conn, filter_input(INPUT_GET, "id")))) {
                 echo "<select name=\"category\">";
 
@@ -80,16 +120,11 @@
 
                 echo "<label for=\"fname\"> or </label>";
             }
-            echo "<input type=\"text\" name=\"category2\" placeholder=\"category\" value=\"\">";
-            echo "<br>";
 
-            echo "<label for=\"fname\">Price:</label>";
-            echo "<input type=\"number\" min=\"0\" name=\"price\" placeholder=\"Price\" value=\"\">";
-            echo "<br>";
-
-            echo "<label for=\"fname\">Currency:</label>";
-            echo "<select name=\"currency\">";
-
+            echo
+            '
+                <label for="fname">Currency</label>
+                <select name="currency">';
             if ((bool)count(get_currency($conn))) {
                 $i = 0;
                 foreach (get_currency($conn) as $row) {
@@ -103,22 +138,44 @@
                     $i++;
                 }
             }
-
             echo "</select>";
+
 
             echo "<label for=\"fname\"> or </label>";
             echo "<input type=\"text\" name=\"currency2\" placeholder=\"Currency\" value=\"\">";
             echo "<br>";
 
-            echo "<label for=\"fname\">Note:</label>";
-            echo "<input type=\"text\" name=\"note\" placeholder=\"Aditional info\" value=\"\">";
-            echo "<br>";
 
+            echo
+            '
+                <div class="txt_field">
+                <input type="text" name="category2" placeholder="Category" value="">
+                <span></span>
+                <label>Category</label>
+                </div>
+
+                <div class="txt_field">
+                <input type="number" min="0" name="price" placeholder="Price" value="">
+                <span></span>
+                <label for="fname">Price</label>
+                </div>
+                
+
+                ';
+            echo
+            '
+                <div class="txt_field">
+                <input type="text" name="note" placeholder="Aditional info" value="">
+                <span></span>
+                <label for="fname">Note</label>
+                </div>
+                ';
+            echo "<div class=\"signup_link\">";
+            echo "</div>";
             echo "<input type=\"submit\" name=\"submit\" value=\"Add\">";
             echo "</form>";
             ?>
         </div>
-    </section>
 </body>
 
 </html>
