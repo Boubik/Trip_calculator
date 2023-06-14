@@ -148,32 +148,29 @@
 
             echo
             '
-                <div class="txt_field">
-                <input type="text" name="category2" placeholder="Category" value="">
-                <span></span>
-                <label>Category</label>
-                </div>
+            <div class="txt_field">
+            <input type="text" name="category2" placeholder="Category" value="">
+            <span></span>
+            <label>Category</label>
+            </div>
 
-                <div class="txt_field">
-                <input type="number" min="0" name="price" placeholder="Price" value="">
-                <span></span>
-                <label for="fname">Price</label>
-                </div>
-                
+            <div class="txt_field">
+            <input type="number" min="0" name="price" placeholder="Price" value="">
+            <span></span>
+            <label for="fname">Price</label>
+            </div>
+            <div class="txt_field">
+            <input type="text" name="note" placeholder="Aditional info" value="">
+            <span></span>
+            <label for="fname">Note</label>
+            </div>
 
-                ';
-            echo
-            '
-                <div class="txt_field">
-                <input type="text" name="note" placeholder="Aditional info" value="">
-                <span></span>
-                <label for="fname">Note</label>
-                </div>
-                ';
-            echo "<div class=\"signup_link\">";
-            echo "</div>";
-            echo "<input type=\"submit\" name=\"submit\" value=\"Add\">";
-            echo "</form>";
+            <input type="submit" name="submit" value="Add">
+            <div class="signup_link">
+            </div>
+            </form>
+            </div>
+            ';
             ?>
         </div>
 </body>
