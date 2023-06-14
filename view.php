@@ -199,7 +199,7 @@
                             echo "</tr>";
                         }
                         echo "<tr>";
-                        // echo "<td id='empty' colspan=\"3\"></td>";
+                        echo "<td id='empty' colspan=\"3\"></td>";
                         echo "</tr>";
                         foreach ($sumAll as $currency => $sum) {
                             echo "<tr>";
@@ -293,7 +293,7 @@
                             if ($users_per_curency[$smallestId] == 0 or abs($users_per_curency[$bigestId]) == 0 or $users_per_curency[$bigestId] == $users_per_curency[$smallestId]) {
                                 break;
                             } else {
-                                echo "<tr>";
+                                echo "<tr></tr>";
                                 if ($users_per_curency[$smallestId] < abs($users_per_curency[$bigestId])) {
                                     $number = $users_per_curency[$smallestId];
                                 } else {
@@ -302,15 +302,15 @@
                                 $users_per_curency[$smallestId] -= $number;
                                 $users_per_curency[$bigestId] += $number;
 
-                                echo "<th>";
+                                echo "<td>";
                                 echo $smallestId;
-                                echo "</th>";
-                                echo "<th>";
+                                echo "</td>";
+                                echo "<td>";
                                 echo $bigestId;
-                                echo "</th>";
-                                echo "<th>";
+                                echo "</td>";
+                                echo "<td>";
                                 echo number_format(-$number, 2, ",", " ") . " " . $currency;
-                                echo "</th>";
+                                echo "</td>";
                                 echo "</tr>";
                             }
                         }
