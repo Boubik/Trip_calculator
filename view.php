@@ -283,9 +283,7 @@
                     $i = 0;
                     foreach ($people_with_currencys as $currency => $users_per_curency) {
                         if ($i != 0) {
-                            echo "<tr>";
-                            // echo "<td id='empty' colspan=\"3\"></td>";
-                            echo "</tr>";
+                            echo "<td id='empty' colspan=\"3\"></td>";
                         }
                         while (!all_have_same_number($users_per_curency)) {
                             $smallestId =  find_smallest($users_per_curency);
@@ -366,6 +364,7 @@
                 </table>
         </div>
     </main>
+    <!-- musíme dodělat ty grafy? čeho? -->
     <script>
         // Get the canvas elements
         const peopleCanvas = document.getElementById("PeopleGraf");
