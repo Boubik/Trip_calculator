@@ -312,9 +312,10 @@ nav ul li ul li a {
 }
 
 .trips-vypis {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(150px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
   margin: 0 10% 3% 10%;
   width: 80%;
@@ -326,17 +327,19 @@ nav ul li ul li a {
   background-color: #7ba6cb;
   border-radius: 50px;
   font-size: 20px;
+  min-width: 120px;
+  text-align: center;
 }
 
 a#item.child {
-  text-align: center;
   text-decoration: none;
 }
+
 a#item.child:hover {
-  scale: 1.1;
+  transform: scale(1.1);
 }
 
-//TABULKY
+/* TABULKY */
 .styled-table {
   border-collapse: collapse;
   font-size: 0.9em;

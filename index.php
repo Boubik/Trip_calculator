@@ -39,7 +39,11 @@
         $navbarItems = '
         <li>
             <a href="add_itemset.php">Add Trip</a>
-        </li>';
+        </li>
+        <li>
+            <a href="logout.php">Logout</a>
+        </li>
+        ';
     }
     include "template.php";
     ?>
@@ -63,7 +67,7 @@
                     ';
             }
 
-            // for ($i = 1; $i <= 200; $i++) {
+            // for ($i = 1; $i <= 50; $i++) {
             //     echo '
             //         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
             //         ';
@@ -111,18 +115,5 @@
         ?>
     </main>
 </body>
-
-
-<!-- <script type="text/javascript">
-    $('.form-signin').submit(function() {
-        if ($("#password").val().length !== 0) {
-            var hash = CryptoJS.SHA3($("#password").val(), {
-                outputLength: 512
-            });
-            $("#password").val(hash);
-        }
-    });
-</script>
-<script src="./js/navbar.js"></script> -->
 
 </html>

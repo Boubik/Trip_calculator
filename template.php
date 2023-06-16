@@ -25,16 +25,10 @@
                     <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
                     <ul class="nav-list">
                         <li>
-                            <a href="index.php">Trips</a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                            <a href="index.php">Home</a>
                         </li>
                         <li>
                             <?php echo isset($navbarItems) ? $navbarItems : ''; ?>
-                        </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
                         </li>
                     </ul>
                 </nav>
