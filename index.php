@@ -2,25 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Split calculator</title>
-    <link rel="stylesheet" href="style/default.scss">
-    <link rel="icon" type="image/svg" href="./images/calculator_favicon.svg">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="js/sha3.js"></script>
-    <script type="text/javascript">
-        function changePasswords() {
-            if (document.getElementById("password").value.length != 0) {
-                var hash = CryptoJS.SHA3(document.getElementById("password").value, {
-                    outputLength: 512
-                });
-                document.getElementById("password").value = hash;
-            }
-        }
-    </script>
-
+    <script src="js/changePasswords.js"></script>
+    <?php
+    $pageTitle = "Split Calculator | Home";
+    include "template.php";
+    ?>
 </head>
 
 
@@ -30,7 +17,6 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
-
 
     if ((isset($_POST["username"]) and !is_null($_POST["username"])) and (isset($_POST["username"]) and !is_null($_POST["password"]))) {
         $_SESSION["username"] = $_POST["username"];
@@ -147,7 +133,7 @@
 </body>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $('.form-signin').submit(function() {
         if ($("#password").val().length !== 0) {
             var hash = CryptoJS.SHA3($("#password").val(), {
@@ -157,6 +143,6 @@
         }
     });
 </script>
-<script src="./js/navbar.js"></script>
+<script src="./js/navbar.js"></script> -->
 
 </html>
