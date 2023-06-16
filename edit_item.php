@@ -91,6 +91,11 @@
                             $array["category"] = $array["category2"];
                         }
                     }
+                    if ($data["currency_name"] != $array["currency"] || $data["currency_name"] != $array["currency2"]) {
+                        if ($data["currency_name"] != $array["currency2"] && $array["currency2"] != "") {
+                            $array["currency"] = $array["currency2"];
+                        }
+                    }
                     update_item($conn, $array);
                     header("Location: view.php?id=" . filter_input(INPUT_GET, "back"));
                 }
