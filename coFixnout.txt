@@ -1,0 +1,10 @@
+bug: když v nějakým tripu chceš editnout CURRENCY, tak musíš zvolit z již existujících (select), 
+když tam vložíš novou, tak jí to vůbec neveme
+*vyzkoušeno na mojí upravenou verzi a dokonce i na tu tvou s čistě přidaným headerem ode mě
+
+---
+
+share tlačítko nefunguje?
+
+---
+

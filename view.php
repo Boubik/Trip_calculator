@@ -43,7 +43,7 @@
                                 <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
                             </li>
                             <li>
-                                <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add item</a>                            
+                                <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
                             </li>
                             <li>
                                 <a href="logout.php">Logout</a>

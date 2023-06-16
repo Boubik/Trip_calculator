@@ -17,40 +17,40 @@
     }
     ?>
 
-    <section>
-        <section class="navigation">
-            <div class="nav-container">
-                <div class="brand">
-                    <img src="./images/icons8-calculator.svg" alt="">
-                    <a href="index.php">Split-Calculator</a>
-                </div>
-
-                <nav>
-                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
-                    <ul class="nav-list">
-                        <li>
-                            <a href="index.php">Home</a>
-                        </li>
-                        <li>
-                            <a href="index.php">About</a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                        </li>
-                        <li>
-                            <a href="index.php">Contact</a>
-                        </li>
-                        <li>
-                            <a href="add_itemset.php">Add item</a>
-                        </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
-                        </li>
-                    </ul>
-                </nav>
+    <section class="navigation">
+        <div class="nav-container">
+            <div class="brand">
+                <img src="./images/icons8-calculator.svg" alt="">
+                <a href="index.php">Split-Calculator</a>
             </div>
 
-        </section>
+            <nav>
+                <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.php">Home</a>
+                    </li>
+                    <li>
+                        <a href="index.php">About</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
+                    </li>
+                    <li>
+                        <a href="index.php">Contact</a>
+                    </li>
+                    <li>
+                        <a href="add_itemset.php">Add Item</a>
+                    </li>
+                    <li>
+                        <a href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </section>
+    <main>
         <div class='container'>
             <?php
             if (isset($_POST["submit"])) {
@@ -73,7 +73,7 @@
             ';
             ?>
         </div>
-    </section>
+    </main>
 </body>
 
 </html>

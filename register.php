@@ -77,21 +77,18 @@
     }
     ?>
 
-    <br>
-
-    <section>
-
-        <?php
-        if (isset($user_is_taken) and $user_is_taken) {
-            echo '<script>alert("Username is already taken.")</script>';
-        }
-        if (isset($short_password) and $short_password) {
-            echo '<script>alert("Password need to be at least 6 characters.")</script>';
-        }
-        if (isset($password_is_not_same) and $password_is_not_same) {
-            echo '<script>alert("Passwords need to be same.")</script>';
-        }
-        echo '
+    <?php
+    if (isset($user_is_taken) and $user_is_taken) {
+        echo '<script>alert("Username is already taken.")</script>';
+    }
+    if (isset($short_password) and $short_password) {
+        echo '<script>alert("Password need to be at least 6 characters.")</script>';
+    }
+    if (isset($password_is_not_same) and $password_is_not_same) {
+        echo '<script>alert("Passwords need to be same.")</script>';
+    }
+    echo '
+    <div class="container">
             <div class="center">
                 <h1>Register</h1>
                 <form onsubmit="changePasswords()" method="POST" action="">
@@ -118,10 +115,9 @@
                     Already a member? <a href="index.php"> Login</a>
                     </div>
                 </form>
-
-            </div>';
-        ?>
-    </section>
+            </div>
+        </div>';
+    ?>
 </body>
 
 <script>

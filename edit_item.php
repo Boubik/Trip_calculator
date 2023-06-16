@@ -40,7 +40,7 @@
                         <a href="index.php">Contact</a>
                     </li>
                     <li>
-                        <a href="add_itemset.php">Add item</a>
+                        <a href="add_itemset.php">Add Item</a>
                     </li>
                     <li>
                         <a href="logout.php">Logout</a>
@@ -50,26 +50,29 @@
         </div>
     </section>
 
-    <section>
+    <div class="container">
         <div class='center'>
             <?php
             if (isset($_GET["delete"])) {
                 if (isset($_POST["submit"])) {
-                    if ($_POST["submit"] == "Delte") {
+                    if ($_POST["submit"] == "Delete") {
                         delete_item($conn, filter_input(INPUT_GET, "id"));
                     }
                     header("Location: view.php?id=" . filter_input(INPUT_GET, "back"));
                 }
-                echo "Delete this item?";
-                echo "<form method=\"POST\" action=\"\">";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Delte\">";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Cancle\">";
-                echo "</form>";
+                echo
+                '
+                <label for="fname"><h2>Delete this item?</h2></label>
+                <form method="POST" action="">
+                <input type="submit" name="submit" value="Delete">
+                <input type="submit" name="submit" value="Cancel">
+                </form>
+                ';
             } else {
                 $sql = "SELECT * FROM `item` WHERE id = '" . filter_input(INPUT_GET, "id") . "'";
                 $data = select($conn, $sql)[0];
                 if (isset($_POST["submit"])) {
-                    if ($_POST["submit"] == "Cancle") {
+                    if ($_POST["submit"] == "Cancel") {
                         header("Location: view.php?id=" . filter_input(INPUT_GET, "back"));
                     }
                     $array = array(
@@ -92,11 +95,13 @@
                     header("Location: view.php?id=" . filter_input(INPUT_GET, "back"));
                 }
                 echo "<form method=\"POST\" action=\"\">";
-                echo "<label for=\"fname\">Price:</label>";
+                echo "<div class=\"txt_field\">";
                 echo "<input type=\"number\" name=\"price\" value=\"" . $data["price"] . "\">";
-                echo "<br>";
+                echo "<span></span>";
+                echo "<label for=\"fname\">Price</label>";
+                echo "</div>";
 
-                echo "<label for=\"fname\">Payer:</label>";
+                echo "<label for=\"fname\">Payer</label>";
                 echo "<select name=\"payer\">";
 
                 foreach (get_posible_payers($conn, filter_input(INPUT_GET, "back")) as $row) {
@@ -109,7 +114,6 @@
                     echo "</option>";
                 }
                 echo "</select>";
-                echo "<br>";
 
                 $sql = "SELECT `user_has_item_set`.`user_name`, `user_has_item_set`.`user_name` IN (SELECT `user_name` FROM `item` INNER JOIN `item_has_user` ON `item_has_user`.`item_id` = `item`.`id` WHERE `item`.`id` = '" . filter_input(INPUT_GET, "id") . "') as 'checked' FROM `user_has_item_set` WHERE `user_has_item_set`.`item_set_id` = (SELECT `item_set_id` FROM `item` WHERE `item`.`id` = '" . filter_input(INPUT_GET, "id") . "')";
                 $users = select($conn, $sql);
@@ -121,11 +125,12 @@
                         echo "<input type=\"checkbox\" name=\"users[]\" value=\"" . $user["user_name"] . "\">" . $user["user_name"] . "";
                     }
                 }
-                echo "<br>";
 
-                echo "<label for=\"fname\">Note:</label>";
+                echo "<div class=\"txt_field\">";
                 echo "<input type=\"text\" name=\"note\" value=\"" . $data["note"] . "\">";
-                echo "<br>";
+                echo "<span></span>";
+                echo "<label for=\"fname\">Note</label>";
+                echo "</div>";
 
                 $sql = "SELECT `item`.`category_name` as 'category' FROM `item` WHERE `item`.`id` = '" . filter_input(INPUT_GET, "id") . "'";
                 $cur_category = select($conn, $sql)[0]["category"];
@@ -142,8 +147,12 @@
                 }
                 echo "</select>";
                 echo " or ";
+
+                echo "<div class=\"txt_field\">";
                 echo "<input type=\"text\" name=\"category2\" value=\"" . $data["category_name"] . "\">";
-                echo "<br>";
+                echo "<span></span>";
+                echo "<label for=\"fname\">Category</label>";
+                echo "</div>";
 
                 echo "<label for=\"fname\">Currency:</label>";
                 echo "<select name=\"currency\">";
@@ -160,15 +169,24 @@
                 }
                 echo "</select>";
                 echo " or ";
+                echo "<div class=\"txt_field\">";
                 echo "<input type=\"text\" name=\"currency2\" value=\"" . $data["currency_name"] . "\">";
-                echo "<br>";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Edit\">";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Cancle\">";
-                echo "</form>";
+                echo "<span></span>";
+                echo "<label for=\"fname\">Currency</label>";
+                echo "</div>";
+
+                echo
+                '
+                <input type="submit" name="submit" value="Edit">
+                <input type="submit" name="submit" value="Cancel">
+                <div class="signup_link">
+                </div>
+                </form>
+                ';
             }
             ?>
         </div>
-    </section>
+    </div>
 </body>
 
 </html>

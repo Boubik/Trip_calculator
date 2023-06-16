@@ -59,16 +59,7 @@
                     <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
                     <ul class="nav-list">
                         <li>
-                            <a href="#">Home</a>
-                        </li>
-                        <li>
-                            <a href="#">About</a>
-                        </li>
-                        <li>
                             <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                        </li>
-                        <li>
-                            <a href="#">Contact</a>
                         </li>
                         <?php
                         if ($login) {
@@ -89,41 +80,41 @@
     </header>
 
     <main>
-        <div class="container">
-            <?php
-            if ($login) {
-                $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
-                $rows = select($conn, $sql);
+        <?php
+        if ($login) {
+            $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
+            $rows = select($conn, $sql);
 
-                echo
-                '
+            echo
+            '
                 <h1 class="heading">TRIPS</h1>
                 <div class="trips-vypis">
             ';
-                //trochu sus, možná změnit (double odkaz v 1 divu)
-                foreach ($rows as $row) {
-                    echo ' 
+            //trochu sus, možná změnit (double odkaz v 1 divu)
+            foreach ($rows as $row) {
+                echo ' 
                         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a>
                     ';
-                }
+            }
 
-                // for ($i = 1; $i <= 200; $i++) {
-                //     echo '
-                //         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
-                //         ';
-                // }
+            // for ($i = 1; $i <= 200; $i++) {
+            //     echo '
+            //         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
+            //         ';
+            // }
 
-                echo
-                '   
+            echo
+            '   
                         </ol>
                     </div>
                 </div>
             ';
-            }
-            ////
-            else {
-                echo
-                '
+        }
+        ////
+        else {
+            echo
+            '
+            <div class="container">
                 <div class="center">
                     <h1>Login</h1>
                     
@@ -148,10 +139,10 @@
 
                     </form>
                 </div>
+            </div>
             ';
-            }
-            ?>
-        </div>
+        }
+        ?>
     </main>
 </body>
 
