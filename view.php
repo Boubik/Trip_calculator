@@ -197,9 +197,8 @@
                     <canvas id="CategoryGraf"></canvas>
                 </section>
 
-                <!--<script>
-                    var data = <?php //echo json_encode($dataPeople); 
-                                ?>;
+                <script>
+                    var data = <?php echo json_encode($dataPeople); ?>;
 
                     var ctx = document.getElementById('PeopleGraf').getContext('2d');
                     var myChart = new Chart(ctx, {
@@ -214,8 +213,7 @@
                             responsive: true
                         }
                     });
-                    var data = <?php //echo json_encode($dataCategory); 
-                                ?>;
+                    var data = <?php echo json_encode($dataCategory); ?>;
 
                     var ctx = document.getElementById('CategoryGraf').getContext('2d');
                     var myChart = new Chart(ctx, {
@@ -230,7 +228,7 @@
                             responsive: true
                         }
                     });
-                </script>-->
+                </script>
 
 
                 <table id='second' class="styled-table">
