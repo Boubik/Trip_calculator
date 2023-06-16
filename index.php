@@ -5,7 +5,7 @@
     <script src="js/sha3.js"></script>
     <script src="js/changePasswords.js"></script>
     <?php
-    $pageTitle = "Split Calculator | Home";
+    $pageTitle = "Split Calculator | Trips";
     ?>
 </head>
 
@@ -39,9 +39,6 @@
         $navbarItems = '
         <li>
             <a href="add_itemset.php">Add Trip</a>
-        </li>
-        <li>
-            <a href="logout.php">Logout</a>
         </li>';
     }
     include "template.php";

@@ -20,9 +20,6 @@
     $navbarItems = '
         <li>
             <a href="add_itemset.php">Add Trip</a>
-        </li>
-        <li>
-            <a href="logout.php">Logout</a>
         </li>';
     include "template.php";
     ?>
