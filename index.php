@@ -6,7 +6,6 @@
     <script src="js/changePasswords.js"></script>
     <?php
     $pageTitle = "Split Calculator | Home";
-    include "template.php";
     ?>
 </head>
 
@@ -17,6 +16,7 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
+
 
     if ((isset($_POST["username"]) and !is_null($_POST["username"])) and (isset($_POST["username"]) and !is_null($_POST["password"]))) {
         $_SESSION["username"] = $_POST["username"];
@@ -33,37 +33,20 @@
         $login = false;
     }
     ?>
-    <header>
-        <section class="navigation">
-            <div class="nav-container">
-                <div class="brand">
-                    <img src="./images/icons8-calculator.svg" alt="">
-                    <a href="index.php">Split-Calculator</a>
-                </div>
 
-                <nav>
-                    <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
-                    <ul class="nav-list">
-                        <li>
-                            <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                        </li>
-                        <?php
-                        if ($login) {
-                            echo '
-                            <li>
-                                <a href="add_itemset.php">Add Trip</a>
-                            </li>
-                            <li>
-                                <a href="logout.php">Logout</a>
-                            </li>
-                        ';
-                        }
-                        ?>
-                    </ul>
-                </nav>
-            </div>
-        </section>
-    </header>
+    <?php
+    if ($login) {
+        $navbarItems = '
+        <li>
+            <a href="add_itemset.php">Add Trip</a>
+        </li>
+        <li>
+            <a href="logout.php">Logout</a>
+        </li>';
+    }
+    include "template.php";
+    ?>
+
 
     <main>
         <?php
