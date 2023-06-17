@@ -86,9 +86,6 @@
                         </th>
                     </tr>
                 </thead>
-                <!-- <tr>
-                    <td id='empty' colspan="3"></td>
-                </tr> -->
 
                 <tbody>
                     <?php
@@ -117,242 +114,245 @@
                     }
                     ?>
                 </tbody>
+            </table>
+            <section class="graf"><canvas id="PeopleGraf"></canvas></section>
 
 
-                <table id='second' class="styled-table">
-                    <caption>
-                        <h1 id="ppl" class="heading" style="font-size: 40px">by Category</h1>
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>
-                                Category
-                            </th>
-                            <th>
-                                Everyone price
-                            </th>
-                            <th>
-                                My Price
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                        <td id='empty' colspan="3"></td>
-                    </tr> -->
+            <table id='second' class="styled-table">
+                <caption>
+                    <h1 id="ppl" class="heading" style="font-size: 40px">by Category</h1>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Everyone price
+                        </th>
+                        <th>
+                            My Price
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                        <?php
-                        $dataCategory = array();
-                        $sumAll = array();
-                        foreach ($category as $row) {
-                            $sumAll[$row["currency"]]["everyone"] = 0;
-                            $sumAll[$row["currency"]]["me"] = 0;
-                            echo "<tr>";
-                            echo "<td>";
-                            echo $row["category"];
-                            echo "</td>";
-
-                            echo "<td>";
-                            if (is_null($row["sum"])) {
-                                echo "0";
-                            } else {
-                                echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
-                                $sumAll[$row["currency"]]["everyone"] += $row["sum"];
-                            }
-                            echo "</td>";
-                            echo "<td>";
-                            $sum = 0;
-                            foreach (get_my_price_per_category($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"], $row["category"], $row["currency"]) as $item) {
-                                $sum += ($item["price"] / count_users_on_item($conn, $item["id"]));
-                            }
-                            $sumMe = $sum;
-                            $sumAll[$row["currency"]]["me"] += $sum;
-                            $dataCategory[] = array("label" => $row["category"], "value" => $sum);
-                            echo number_format($sum, 2, ",", " ") . " " . $row["currency"];
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                        echo "<tr>";
-                        echo "<td id='empty' colspan=\"3\"></td>";
-                        echo "</tr>";
-                        foreach ($sumAll as $currency => $sum) {
-                            echo "<tr>";
-                            echo "<td>";
-                            echo "All " . $currency;
-                            echo "</td>";
-                            echo "<td>";
-                            echo number_format($sum["everyone"], 2, ",", " ") . " " . $currency;
-                            echo "</td>";
-                            echo "<td>";
-                            echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-
-                <section>
-                    <canvas id="PeopleGraf"></canvas>
-                    <canvas id="CategoryGraf"></canvas>
-                </section>
-
-                <script>
-                    var data = <?php echo json_encode($dataPeople); ?>;
-
-                    var ctx = document.getElementById('PeopleGraf').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: data.map(item => item.label),
-                            datasets: [{
-                                data: data.map(item => item.value)
-                            }]
-                        },
-                        options: {
-                            responsive: true
-                        }
-                    });
-                    var data = <?php echo json_encode($dataCategory); ?>;
-
-                    var ctx = document.getElementById('CategoryGraf').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: data.map(item => item.label),
-                            datasets: [{
-                                data: data.map(item => item.value)
-                            }]
-                        },
-                        options: {
-                            responsive: true
-                        }
-                    });
-                </script>
-
-
-                <table id='second' class="styled-table">
-                    <caption>
-                        <h1 id="ppl" class="heading" style="font-size: 40px">Calculated payback</h1>
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>
-                                From
-                            </th>
-                            <th>
-                                To
-                            </th>
-                            <th>
-                                How much
-                            </th>
-                        </tr>
-                    </thead>
-                    <!-- <tr>
-                        <td id='empty' colspan="3"></td>
-                    </tr> -->
                     <?php
-                    $i = 0;
-                    foreach ($people_with_currencys as $currency => $users_per_curency) {
-                        if ($i != 0) {
-                            echo "<td id='empty' colspan=\"3\"></td>";
-                        }
-                        while (!all_have_same_number($users_per_curency)) {
-                            $smallestId =  find_smallest($users_per_curency);
-                            $bigestId = find_bigest($users_per_curency);
-                            if ($users_per_curency[$smallestId] == 0 or abs($users_per_curency[$bigestId]) == 0 or $users_per_curency[$bigestId] == $users_per_curency[$smallestId]) {
-                                break;
-                            } else {
-                                echo "<tr></tr>";
-                                if ($users_per_curency[$smallestId] < abs($users_per_curency[$bigestId])) {
-                                    $number = $users_per_curency[$smallestId];
-                                } else {
-                                    $number = abs($users_per_curency[$bigestId]);
-                                }
-                                $users_per_curency[$smallestId] -= $number;
-                                $users_per_curency[$bigestId] += $number;
+                    $dataCategory = array();
+                    $sumAll = array();
+                    foreach ($category as $row) {
+                        $sumAll[$row["currency"]]["everyone"] = 0;
+                        $sumAll[$row["currency"]]["me"] = 0;
+                        echo "<tr>";
+                        echo "<td>";
+                        echo $row["category"];
+                        echo "</td>";
 
-                                echo "<td>";
-                                echo $smallestId;
-                                echo "</td>";
-                                echo "<td>";
-                                echo $bigestId;
-                                echo "</td>";
-                                echo "<td>";
-                                echo number_format(-$number, 2, ",", " ") . " " . $currency;
-                                echo "</td>";
-                                echo "</tr>";
-                            }
+                        echo "<td>";
+                        if (is_null($row["sum"])) {
+                            echo "0";
+                        } else {
+                            echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
+                            $sumAll[$row["currency"]]["everyone"] += $row["sum"];
                         }
-                        $i++;
+                        echo "</td>";
+                        echo "<td>";
+                        $sum = 0;
+                        foreach (get_my_price_per_category($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"], $row["category"], $row["currency"]) as $item) {
+                            $sum += ($item["price"] / count_users_on_item($conn, $item["id"]));
+                        }
+                        $sumMe = $sum;
+                        $sumAll[$row["currency"]]["me"] += $sum;
+                        $dataCategory[] = array("label" => $row["category"], "value" => $sum);
+                        echo number_format($sum, 2, ",", " ") . " " . $row["currency"];
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "<tr>";
+                    echo "<td id='empty' colspan=\"3\"></td>";
+                    echo "</tr>";
+                    foreach ($sumAll as $currency => $sum) {
+                        echo "<tr>";
+                        echo "<td>";
+                        echo "All " . $currency;
+                        echo "</td>";
+                        echo "<td>";
+                        echo number_format($sum["everyone"], 2, ",", " ") . " " . $currency;
+                        echo "</td>";
+                        echo "<td>";
+                        echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
+                        echo "</td>";
+                        echo "</tr>";
                     }
                     ?>
-                </table>
+                </tbody>
+            </table>
+            <section class="graf"><canvas id="CategoryGraf"></canvas></section>
 
-                <table class="styled-table">
-                    <caption>
-                        <h1 id="ppl" class="heading" style="font-size: 40px">Items
-                            <?php
-                            echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
-                            ?>
-                        </h1>
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>Price</th>
-                            <th>One person</th>
-                            <th>Category</th>
-                            <th>Paid</th>
-                            <th>Will pay</th>
-                            <th>Note</th>
-                            <?php
-                            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                                echo "<th colspan=\"2\">Control</th>";
+
+            <table id='second' class="styled-table">
+                <caption>
+                    <h1 id="ppl" class="heading" style="font-size: 40px">Calculated payback</h1>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>
+                            From
+                        </th>
+                        <th>
+                            To
+                        </th>
+                        <th>
+                            How much
+                        </th>
+                    </tr>
+                </thead>
+                <!-- <tr>
+                        <td id='empty' colspan="3"></td>
+                    </tr> -->
+                <?php
+                $i = 0;
+                foreach ($people_with_currencys as $currency => $users_per_curency) {
+                    if ($i != 0) {
+                        echo "<td id='empty' colspan=\"3\"></td>";
+                    }
+                    while (!all_have_same_number($users_per_curency)) {
+                        $smallestId =  find_smallest($users_per_curency);
+                        $bigestId = find_bigest($users_per_curency);
+                        if ($users_per_curency[$smallestId] == 0 or abs($users_per_curency[$bigestId]) == 0 or $users_per_curency[$bigestId] == $users_per_curency[$smallestId]) {
+                            break;
+                        } else {
+                            echo "<tr></tr>";
+                            if ($users_per_curency[$smallestId] < abs($users_per_curency[$bigestId])) {
+                                $number = $users_per_curency[$smallestId];
+                            } else {
+                                $number = abs($users_per_curency[$bigestId]);
                             }
-                            ?>
-                        </tr>
-                    </thead>
-                    <!-- <tr>
+                            $users_per_curency[$smallestId] -= $number;
+                            $users_per_curency[$bigestId] += $number;
+
+                            echo "<td>";
+                            echo $smallestId;
+                            echo "</td>";
+                            echo "<td>";
+                            echo $bigestId;
+                            echo "</td>";
+                            echo "<td>";
+                            echo number_format(-$number, 2, ",", " ") . " " . $currency;
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                    }
+                    $i++;
+                }
+                ?>
+            </table>
+
+            <table class="styled-table">
+                <caption>
+                    <h1 id="ppl" class="heading" style="font-size: 40px">Items
+                        <?php
+                        echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
+                        ?>
+                    </h1>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>One person</th>
+                        <th>Category</th>
+                        <th>Paid</th>
+                        <th>Will pay</th>
+                        <th>Note</th>
+                        <?php
+                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                            echo "<th colspan=\"2\">Controls</th>";
+                        }
+                        ?>
+                    </tr>
+                </thead>
+                <!-- <tr>
                         <td id='empty' colspan="7"></td>
                     </tr> -->
 
-                    <?php
-                    $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
-                    $rows = select($conn, $sql);
-                    foreach ($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                        echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                        echo "<td>" . $row["category_name"] . "</td>";
-                        echo "<td>" . $row["payer"] . "</td>";
-                        echo "<td>" . $row["will_pay"] . "</td>";
-                        echo "<td>" . $row["note"] . "</td>";
-                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                            echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
-                        }
-                        echo " </tr>";
+                <?php
+                $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
+                $rows = select($conn, $sql);
+                foreach ($rows as $row) {
+                    echo "<tr>";
+                    echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                    echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                    echo "<td>" . $row["category_name"] . "</td>";
+                    echo "<td>" . $row["payer"] . "</td>";
+                    echo "<td>" . $row["will_pay"] . "</td>";
+                    echo "<td>" . $row["note"] . "</td>";
+                    if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                        echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
                     }
-                    ?>
-                </table>
+                    echo " </tr>";
+                }
+                ?>
+            </table>
         </div>
     </main>
-    <!-- musíme dodělat ty grafy? čeho? -->
+    <!-- Výpis grafů -->
     <script>
-        // Get the canvas elements
-        const peopleCanvas = document.getElementById("PeopleGraf");
-        const categoryCanvas = document.getElementById("CategoryGraf");
+        var data = <?php echo json_encode($dataPeople); ?>;
 
-        // Get the 2D rendering context for each canvas
-        const peopleCtx = peopleCanvas.getContext("2d");
-        const categoryCtx = categoryCanvas.getContext("2d");
+        var ctx = document.getElementById('PeopleGraf').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.map(item => item.label),
+                datasets: [{
+                    data: data.map(item => item.value)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right', // Set the position of the legends (options: 'top', 'bottom', 'left', 'right')
+                        labels: {
+                            color: 'white', // Set the font color of the legends
+                            font: {
+                                size: 16, // Set the font size of the legends
+                                weight: 'bold' // Set the font weight of the legends
+                            }
+                            // You can customize other properties as per your requirements
+                        }
+                    }
+                }
+            }
+        });
+        var data = <?php echo json_encode($dataCategory); ?>;
 
-        // Draw your graphs using the canvas contexts
-        // Example code:
-        peopleCtx.fillStyle = "red";
-        peopleCtx.fillRect(0, 0, 100, 100);
-
-        categoryCtx.fillStyle = "blue";
-        categoryCtx.fillRect(0, 0, 100, 100);
+        var ctx = document.getElementById('CategoryGraf').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.map(item => item.label),
+                datasets: [{
+                    data: data.map(item => item.value)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'left', // Set the position of the legends (options: 'top', 'bottom', 'left', 'right')
+                        labels: {
+                            color: 'white', // Set the font color of the legends
+                            font: {
+                                size: 16, // Set the font size of the legends
+                                weight: 'bold' // Set the font weight of the legends
+                            }
+                            // You can customize other properties as per your requirements
+                        }
+                    }
+                }
+            }
+        });
     </script>
 </body>
 

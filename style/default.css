@@ -174,7 +174,7 @@ h1.heading {
 }
 
 .nav-container {
-  // max-width: 1000px;  kdybych to chtěl dát na střed
+  /* max-width: 1000px;  kdybych to chtěl dát na střed */
   margin: 0 auto;
 }
 nav {
@@ -400,4 +400,12 @@ select::before {
 
 td#empty {
   background-color: #666666;
+}
+
+/* GRAPHS */
+.graf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
