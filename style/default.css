@@ -405,6 +405,9 @@ td#empty {
 
 /* MOBILY */
 @media only screen and (max-width: 800px) {
+  /* body {
+    overflow-x: hidden;
+  } */
   .center {
     width: 300px;
     background: white;
@@ -438,5 +441,11 @@ td#empty {
     font-size: 55px;
     color: #ffffff;
     font-style: oblique;
+  }
+  .styled-table th,
+  .styled-table td {
+    padding: 4px 5px;
+    min-width: 100%;
+    white-space: nowrap;
   }
 }
