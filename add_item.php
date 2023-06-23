@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | Add item</title>
-    <link rel="stylesheet" href="style/default.scss">
 </head>
 
 <body>
     <?php
+    include "template.php";
     include "functions.php";
     $conn = connect_db();
     session_start();
@@ -16,53 +16,8 @@
         header("Location: index.php");
     }
     ?>
-    <section class="navigation">
-        <div class="nav-container">
-            <div class="brand">
-                <img src="./images/icons8-calculator.svg" alt="">
-                <a href="index.php">Split-Calculator</a>
-            </div>
 
-            <nav>
-                <div class="nav-mobile"><a id="navbar-toggle" href="#!"><span></span></a></div>
-                <ul class="nav-list">
-                    <li>
-                        <a href="index.php">Home</a>
-                    </li>
-                    <li>
-                        <a href="index.php">About</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/Boubik/Trip_calculator">GitHub</a>
-                    </li>
-                    <li>
-                        <a href="index.php">Contact</a>
-                    </li>
-                    <li>
-                        <a href="add_itemset.php">Add Item</a>
-                    </li>
-                    <li>
-                        <a href="logout.php">Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </section>
     <main>
-
-        <!-- echo
-        '
-            <form method="POST" action="">
-                <div class="txt_field">
-                    <input type="text" name="username" placeholder="Name of the user" value="">
-                    <span></span>
-                    <label>Add user</label>
-                </div>
-                <input type="submit" name="submit" value="Add">
-                <div class="signup_link">
-                </div>
-            </form>
-        '; -->
 
         <div class="container">
             <div class='center'>

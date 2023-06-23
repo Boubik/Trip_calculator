@@ -30,6 +30,9 @@
                         <li>
                             <?php echo isset($navbarItems) ? $navbarItems : ''; ?>
                         </li>
+                        <li>
+                            <a href="logout.php">Logout</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
