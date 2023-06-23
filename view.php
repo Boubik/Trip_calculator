@@ -27,6 +27,9 @@
     <li>
         <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
     </li>
+    <li>
+        <a href="logout.php">Logout</a>
+    </li>
     ';
     include "template.php";
     ?>

@@ -8,13 +8,19 @@
 
 <body>
     <?php
-    include "template.php";
     include "functions.php";
     $conn = connect_db();
     session_start();
     if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || !isset($_GET["back"]) || !isset($_GET["id"]) || !own_item_set($conn, filter_input(INPUT_GET, "back"), $_SESSION["username"])) {
         header("Location: index.php");
     }
+    $navbarItems =
+        '
+    <li>
+        <a href="logout.php">Logout</a>
+    </li>
+    ';
+    include "template.php";
     ?>
 
     <div class="container">
@@ -89,7 +95,11 @@
 
                 $sql = "SELECT `user_has_item_set`.`user_name`, `user_has_item_set`.`user_name` IN (SELECT `user_name` FROM `item` INNER JOIN `item_has_user` ON `item_has_user`.`item_id` = `item`.`id` WHERE `item`.`id` = '" . filter_input(INPUT_GET, "id") . "') as 'checked' FROM `user_has_item_set` WHERE `user_has_item_set`.`item_set_id` = (SELECT `item_set_id` FROM `item` WHERE `item`.`id` = '" . filter_input(INPUT_GET, "id") . "')";
                 $users = select($conn, $sql);
-                echo "<label for=\"fname\">Will pay:</label>";
+                echo
+                '
+                <div>
+                <label for="fname">Will pay:</label>
+                ';
                 foreach ($users as $user) {
                     if ($user["checked"]) {
                         echo "<input type=\"checkbox\" name=\"users[]\" value=\"" . $user["user_name"] . "\" checked>" . $user["user_name"] . "";
@@ -97,6 +107,7 @@
                         echo "<input type=\"checkbox\" name=\"users[]\" value=\"" . $user["user_name"] . "\">" . $user["user_name"] . "";
                     }
                 }
+                echo "</div>";
 
                 echo "<div class=\"txt_field\">";
                 echo "<input type=\"text\" name=\"note\" value=\"" . $data["note"] . "\">";

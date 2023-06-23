@@ -8,7 +8,6 @@
 
 <body>
     <?php
-    include "template.php";
     include "functions.php";
     $conn = connect_db();
     session_start();
@@ -30,6 +29,7 @@
         <a href="logout.php">Logout</a>
     </li>
     ';
+    include "template.php";
     ?>
 
     <section>

@@ -8,13 +8,19 @@
 
 <body>
     <?php
-    include "template.php";
     include "functions.php";
     $conn = connect_db();
     session_start();
     if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])) {
         header("Location: index.php");
     }
+
+    $navbarItems = '
+    <li>
+        <a href="logout.php">Logout</a>
+    </li>
+    ';
+    include "template.php";
     ?>
 
     <main>

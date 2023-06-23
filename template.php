@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg" href="./images/calculator_favicon.svg">
     <title><?php echo isset($pageTitle) ? $pageTitle : "Split Calculator"; ?></title>
-    <script src="./js/navbar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="style/default.css">
 </head>
@@ -30,15 +29,12 @@
                         <li>
                             <?php echo isset($navbarItems) ? $navbarItems : ''; ?>
                         </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
-                        </li>
                     </ul>
                 </nav>
             </div>
         </section>
     </header>
-
+    <script src="./js/navbar.js"></script>
 </body>
 
 </html>
