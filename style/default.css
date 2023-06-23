@@ -418,4 +418,12 @@ td#empty {
   .container {
     margin-left: 4.5%;
   }
+
+  .trips-vypis {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    margin-bottom: 10%;
+    width: 80%;
+  }
 }
