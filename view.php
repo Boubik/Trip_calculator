@@ -274,9 +274,6 @@
                         ?>
                     </tr>
                 </thead>
-                <!-- <tr>
-                        <td id='empty' colspan="7"></td>
-                    </tr> -->
 
                 <?php
                 $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
