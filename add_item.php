@@ -123,7 +123,7 @@
             <label for="fname">Currency</label>
             </div>
             <div class="txt_field">
-            <input type="number" min="0" name="price" placeholder="Price" value="">
+            <input type="number" min="0" step=0.01 name="price" placeholder="Price" value="">
             <span></span>
             <label for="fname">Price</label>
             </div>
