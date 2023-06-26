@@ -3,7 +3,7 @@
 
 <head>
     <script src="js/sha3.js"></script>
-    <script src="js/changePasswords.js"></script>
+    <script src="js/changePasswordsIndex.js"></script>
     <?php
     $pageTitle = "Split Calculator | Trips";
     ?>
