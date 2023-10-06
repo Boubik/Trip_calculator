@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Split calculator | Register</title>
-    <script src="./js/changePasswords.js"></script>
+    <script src="./js/changePasswordRegister.js"></script>
 </head>
 
 <body>
