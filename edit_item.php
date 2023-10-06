@@ -74,7 +74,7 @@
                 }
                 echo "<form method=\"POST\" action=\"\">";
                 echo "<div class=\"txt_field\">";
-                echo "<input type=\"number\" name=\"price\" value=\"" . $data["price"] . "\">";
+                echo "<input type=\"number\" min=0 step=0.01 name=\"price\" value=\"" . $data["price"] . "\">";
                 echo "<span></span>";
                 echo "<label for=\"fname\">Price</label>";
                 echo "</div>";
