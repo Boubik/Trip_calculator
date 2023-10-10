@@ -39,11 +39,19 @@ body {
   width: 80%;
   margin: 0 auto;
   margin-bottom: 3%;
-  /* Add the following CSS */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.container-view {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 3%;
 }
 
 .center {
@@ -51,7 +59,6 @@ body {
   background: white;
   border-radius: 10px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
-  overflow: auto;
   margin: auto;
 }
 
@@ -352,6 +359,7 @@ a#item.child:hover {
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   margin-bottom: 3%;
+  overflow-x: hidden;
 }
 .styled-table thead tr {
   background-color: #2581dc;
@@ -418,9 +426,6 @@ td#empty {
 
 /* MOBILY */
 @media only screen and (max-width: 800px) {
-  /* body {
-    overflow-x: hidden;
-  } */
   .center {
     width: 300px;
     background: white;
@@ -441,12 +446,6 @@ td#empty {
     margin-bottom: 10%;
     width: 80%;
   }
-  .styled-table {
-    font-size: 0.9em;
-    min-width: 250px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    margin-bottom: 3%;
-  }
   .graf {
     height: 300px;
   }
@@ -457,10 +456,24 @@ td#empty {
     color: #ffffff;
     font-style: oblique;
   }
+  .styled-table {
+    min-width: 350px;
+    overflow-x: auto;
+    margin: auto;
+  }
+
+  .styled-table thead tr {
+    background-color: #2581dc;
+    color: #ffffff;
+    text-align: left;
+  }
+
   .styled-table th,
   .styled-table td {
     padding: 4px 5px;
-    min-width: 100%;
-    white-space: nowrap;
+  }
+
+  .styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
   }
 }

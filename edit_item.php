@@ -35,10 +35,12 @@
                 }
                 echo
                 '
-                <label for="fname"><h2>Delete this item?</h2></label>
+                <h1>Delete this item?</h1>
                 <form method="POST" action="">
                 <input type="submit" name="submit" value="Delete">
                 <input type="submit" name="submit" value="Cancel">
+                <div class="signup_link">
+                </div>
                 </form>
                 ';
             } else {

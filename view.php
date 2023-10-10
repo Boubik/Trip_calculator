@@ -43,7 +43,7 @@
             $_SESSION["username"] = filter_input(INPUT_GET, "share");
         }
         ?>
-        <div class="container">
+        <div class="container-view">
 
             <?php
             $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
@@ -253,7 +253,7 @@
 
             <table class="styled-table">
                 <caption>
-                    <h1 id="ppl" class="heading" style="font-size: 40px">Items
+                    <h1 id=" ppl" class="heading" style="font-size: 40px">Items
                         <?php
                         echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
                         ?>
@@ -293,7 +293,6 @@
                 }
                 ?>
             </table>
-        </div>
     </main>
     <!-- Výpis grafů -->
     <script>
