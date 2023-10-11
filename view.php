@@ -251,48 +251,50 @@
                 ?>
             </table>
 
-            <table class="styled-table">
-                <caption>
-                    <h1 id=" ppl" class="heading" style="font-size: 40px">Items
-                        <?php
-                        echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
-                        ?>
-                    </h1>
-                </caption>
-                <thead>
-                    <tr>
-                        <th>Price</th>
-                        <th>One person</th>
-                        <th>Category</th>
-                        <th>Paid</th>
-                        <th>Will pay</th>
-                        <th>Note</th>
-                        <?php
-                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                            echo "<th colspan=\"2\">Controls</th>";
-                        }
-                        ?>
-                    </tr>
-                </thead>
+            <div class="table-container">
+                <table class="styled-table">
+                    <caption>
+                        <h1 id=" ppl" class="heading" style="font-size: 40px">Items
+                            <?php
+                            echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
+                            ?>
+                        </h1>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>One person</th>
+                            <th>Category</th>
+                            <th>Paid</th>
+                            <th>Will pay</th>
+                            <th>Note</th>
+                            <?php
+                            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                                echo "<th colspan=\"2\">Controls</th>";
+                            }
+                            ?>
+                        </tr>
+                    </thead>
 
-                <?php
-                $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
-                $rows = select($conn, $sql);
-                foreach ($rows as $row) {
-                    echo "<tr>";
-                    echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                    echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                    echo "<td>" . $row["category_name"] . "</td>";
-                    echo "<td>" . $row["payer"] . "</td>";
-                    echo "<td>" . $row["will_pay"] . "</td>";
-                    echo "<td>" . $row["note"] . "</td>";
-                    if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
-                        echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
+                    <?php
+                    $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
+                    $rows = select($conn, $sql);
+                    foreach ($rows as $row) {
+                        echo "<tr>";
+                        echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                        echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
+                        echo "<td>" . $row["category_name"] . "</td>";
+                        echo "<td>" . $row["payer"] . "</td>";
+                        echo "<td>" . $row["will_pay"] . "</td>";
+                        echo "<td>" . $row["note"] . "</td>";
+                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                            echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
+                        }
+                        echo " </tr>";
                     }
-                    echo " </tr>";
-                }
-                ?>
-            </table>
+                    ?>
+                </table>
+            </div>
     </main>
     <!-- Výpis grafů -->
     <script>

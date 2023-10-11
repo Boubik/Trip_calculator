@@ -361,6 +361,9 @@ a#item.child:hover {
   margin-bottom: 3%;
   overflow-x: hidden;
 }
+.table-container {
+  min-width: 400px;
+}
 .styled-table thead tr {
   background-color: #2581dc;
   color: #ffffff;
@@ -458,22 +461,11 @@ td#empty {
   }
   .styled-table {
     min-width: 350px;
-    overflow-x: auto;
     margin: auto;
   }
 
-  .styled-table thead tr {
-    background-color: #2581dc;
-    color: #ffffff;
-    text-align: left;
-  }
-
-  .styled-table th,
-  .styled-table td {
-    padding: 4px 5px;
-  }
-
-  .styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
+  .table-container {
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }
