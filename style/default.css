@@ -24,14 +24,6 @@ body {
   background-attachment: fixed;
 }
 
-/* .container {
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  margin: 0 auto;
-  margin-bottom: 3%;
-} */
 .container {
   display: grid;
   align-items: center;
@@ -253,6 +245,7 @@ nav ul li ul li a {
   height: 55px;
   width: 70px;
 }
+
 @media only screen and (max-width: 800px) {
   .nav-mobile {
     display: block;
@@ -359,8 +352,8 @@ a#item.child:hover {
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   margin-bottom: 3%;
-  overflow-x: hidden;
 }
+
 .table-container {
   min-width: 400px;
 }
@@ -464,8 +457,15 @@ td#empty {
     margin: auto;
   }
 
+  .styled-table th,
+  .styled-table td {
+    padding: 4px 5px;
+  }
+
   .table-container {
     overflow-x: auto;
     white-space: nowrap;
+    margin-left: 5%;
+    width: 400px;
   }
 }
