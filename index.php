@@ -27,7 +27,7 @@
     } else {
     }
 
-    if (isset($_SESSION["username"]) or isset($_SESSION["password"])) {
+    if (isset($_SESSION["username"]) and isset($_SESSION["password"])) {
         $login = is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]);
     } else {
         $login = false;
