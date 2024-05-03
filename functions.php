@@ -54,6 +54,7 @@ function is_loged_in($conn, $username, $password)
         // Log failed login
         error_log("Failed login for user: $username from IP: {$_SERVER['REMOTE_ADDR']}" . PHP_EOL, 3, "/var/log/tripcalculator_auth.log");
         return false;
+    }
 }
 
 function user_is_taken($conn, $username)
