@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Split calculator | Add item set</title>
-    <link rel="stylesheet" href="style/default.css">
+    <?php
+    $pageTitle = "Split Calculator | Add Trip";
+    ?>
 </head>
 
 <body>
@@ -12,33 +12,45 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
-    if(!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])){
+    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])) {
         header("Location: index.php");
     }
     ?>
+    <?php
+    $navbarItems = '
+        <li>
+            <a href="add_itemset.php">Add Trip</a>
+        </li>
+        <li>
+            <a href="logout.php">Logout</a>
+        </li>';
+    include "template.php";
+    ?>
 
-    <header>
-        <h1><a href="/">Split calculator</a></h1>
-    </header>
-
-    <br>
-
-    <section>
+    <main>
         <div class='container'>
             <?php
-            if(isset($_POST["submit"])){
+            if (isset($_POST["submit"])) {
                 $id = add_item_set($conn, $_POST["name"], $_SESSION["username"]);
-                header("Location: view.php?id=".$id);
+                header("Location: view.php?id=" . $id);
             }
-            echo "<form method=\"POST\" action=\"\">";
-            echo "<label for=\"fname\">Name:</label>";
-            echo "<input type=\"text\" name=\"name\" placeholder=\"Item price\" value=\"\">";
-            echo "<br>";
-            echo "<input type=\"submit\" name=\"submit\" value=\"Add\">";
-            echo "</form>";
+            echo '
+            <div class="center">
+                <form method="POST" action="">
+                    <div class="txt_field">
+                            <input type="text" name="name" placeholder="Name of the trip" value="">                             
+                            <span></span>
+                        <label>Name</label>
+                    </div>
+                    <input type="submit" name="submit" value="Add">
+                    <div class="signup_link">
+                    </div>
+                </form>
+            </div>
+            ';
             ?>
         </div>
-    </section>
+    </main>
 </body>
 
 </html>

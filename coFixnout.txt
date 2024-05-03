@@ -1,0 +1,1 @@
+upravit graf People -> zobrazuje stejný lidi víckrát kvůli jiný měně -> spočítat nějak na %? jakože třeba Chlouba platí 100% Madeiry nebo tak něco?

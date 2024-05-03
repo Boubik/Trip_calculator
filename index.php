@@ -2,27 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Split calculator</title>
-    <link rel="stylesheet" href="style/default.css">
     <script src="js/sha3.js"></script>
-    <script type="text/javascript">
-        function changePasswords() {
-            if (document.getElementById("password").value.length != 0) {
-                var hash = CryptoJS.SHA3(document.getElementById("password").value, {
-                    outputLength: 512
-                });
-                document.getElementById("password").value = hash;
-            }
-        }
-    </script>
+    <script src="js/changePasswordsIndex.js"></script>
+    <?php
+    $pageTitle = "Split Calculator | Trips";
+    ?>
 </head>
+
+
 
 <body>
     <?php
     include "functions.php";
     $conn = connect_db();
     session_start();
+
 
     if ((isset($_POST["username"]) and !is_null($_POST["username"])) and (isset($_POST["username"]) and !is_null($_POST["password"]))) {
         $_SESSION["username"] = $_POST["username"];
@@ -40,59 +34,86 @@
     }
     ?>
 
-    <header>
-        <h1><a href="/">Split calculator</a></h1>
+    <?php
+    if ($login) {
+        $navbarItems = '
+        <li>
+            <a href="add_itemset.php">Add Trip</a>
+        </li>
+        <li>
+            <a href="logout.php">Logout</a>
+        </li>
+        ';
+    }
+    include "template.php";
+    ?>
+
+
+    <main>
         <?php
         if ($login) {
-            echo "<a href=\"add_itemset.php\">Add new item set</a>";
-            echo "<a href=\"logout.php\">Logout of " . $_SESSION["username"] . "</a>";
-        } else {
-            echo "<a href=\"register.php\">Register</a>";
-        }
-        ?>
-    </header>
+            $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
+            $rows = select($conn, $sql);
 
-    <br>
-
-    <section>
-        <div class='container'>
-            <?php
-            if ($login) {
-                $sql = "SELECT `id`, `name` FROM `item_set` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`item_set_id` = `item_set`.`id` WHERE`user_has_item_set`.`user_name` = '" . $_SESSION["username"] . "'";
-                $rows = select($conn, $sql);
-
-                foreach ($rows as $row) {
-                    echo "<div id='grid'><a id='item' href=view.php?id=" . str_replace(' ', '%20', $row["id"]) . ">" . $row["name"] . "</a></div>";
-                }
-            } else {
-                echo "<form onsubmit=\"changePasswords()\" method=\"POST\" action=\"\">";
-                echo "<label for=\"fname\">Username:</label>";
-                echo "<input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Username\" value=\"\">";
-                echo "<br>";
-                echo "<label for=\"lname\">Password:</label>";
-                echo "<input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\">";
-                echo "<br>";
-                echo "<input type=\"submit\" name=\"submit\" value=\"Login\">";
-                echo "</form>";
+            echo
+            '
+                <h1 class="heading">TRIPS</h1>
+                <div class="trips-vypis">
+            ';
+            //trochu sus, možná změnit (double odkaz v 1 divu)
+            foreach ($rows as $row) {
+                echo ' 
+                        <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", $row["id"]) . '">' . $row["name"] . '</a>
+                    ';
             }
 
+            // for ($i = 1; $i <= 50; $i++) {
+            //     echo '
+            //         <a class="child" id="item" href="view.php?id=' . str_replace(" ", "%20", "cs") . '">cs</a>
+            //         ';
+            // }
 
-
-
-
-            ?>
-        </div>
-    </section>
-</body>
-<script type="text/javascript">
-    $('.form-signin').submit(function() {
-        if ($("#password").val().length !== 0) {
-            var hash = CryptoJS.SHA3($("#password").val(), {
-                outputLength: 512
-            });
-            $("#password").val(hash);
+            echo
+            '   
+                        </ol>
+                    </div>
+                </div>
+            ';
         }
-    });
-</script>
+        ////
+        else {
+            echo
+            '
+            <div class="container">
+                <div class="center">
+                    <h1>Login</h1>
+                    
+                    <form onsubmit="changePasswords()" method="POST" action="">
+                    
+                        <div class="txt_field">
+                            <input type="text" id="username" name="username" placeholder="Username" value="">                                
+                            <span></span>
+                            <label>Username</label>
+                        </div>
+
+                        <div class="txt_field">
+                            <input type="password" id="password" name="password" placeholder="Password">
+                            <span></span>
+                            <label>Password</label>
+                        </div>
+
+                        <input type="submit" name="submit" value="Login">
+                        <div class="signup_link">
+                        Not a member? <a href="register.php"> Sign-Up</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            ';
+        }
+        ?>
+    </main>
+</body>
 
 </html>
