@@ -11,7 +11,7 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
-    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])) {
+    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
         header("Location: index.php");
     }
 
@@ -38,17 +38,14 @@
             if (isset($_POST["submit"])) {
                 if (user_is_taken($conn, filter_input(INPUT_POST, "username"))) {
                     user_has_item_set($conn, filter_input(INPUT_GET, "id"), filter_input(INPUT_POST, "username"));
+                    if (isset($_POST["editor"]) && $_POST["editor"] == "on") {
+                        add_edditor($conn, filter_input(INPUT_GET, "id"), filter_input(INPUT_POST, "username"));
+                    }
                     header("Location: view.php?id=" . filter_input(INPUT_GET, "id"));
                 } else {
                     echo "User doesn't exist!";
                 }
             }
-            // echo "<form method=\"POST\" action=\"\">";
-            // echo "<label for=\"fname\">New user to item set:</label>";
-            // echo "<input type=\"text\" name=\"username\" placeholder=\"Username\" value=\"\">";
-            // echo "<br>";
-            // echo "<input type=\"submit\" name=\"submit\" value=\"Add\">";
-            // echo "</form>";
 
             echo
             '
@@ -58,7 +55,14 @@
                 <input type="text" name="username" placeholder="Name of the user" value="">                             
                 <span></span>
                 <label>Add user</label>
-                </div>
+                </div>';
+
+            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+                echo "<input type=\"checkbox\" name=\"editor\">Make editor";
+            }
+
+            echo '
+                <br>
                 <input type="submit" name="submit" value="Add">
                 <div class="signup_link">
                 </div>

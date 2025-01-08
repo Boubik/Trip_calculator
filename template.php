@@ -9,6 +9,7 @@
     <title><?php echo isset($pageTitle) ? $pageTitle : "Split Calculator"; ?></title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="style/default.css">
+    <?php echo isset($head) ? $head : ''; ?>
 </head>
 
 <body>
@@ -37,6 +38,3 @@
         </section>
     </header>
     <script src="./js/navbar.js"></script>
-</body>
-
-</html>

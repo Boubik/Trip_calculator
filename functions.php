@@ -374,3 +374,9 @@ function get_owner_of_item_set($conn, $id)
     $sql = "SELECT `owner` FROM `item_set` WHERE `id` = '" . $id . "'";
     return select($conn, $sql)[0]["owner"];
 }
+
+function add_edditor($conn, $item_set_id, $username)
+{
+    $sql = "INSERT INTO `editors` (`item_set_id`, `user_name`) VALUES ('" . $item_set_id . "', '" . $username . "');";
+    return insert($conn, $sql);
+}
