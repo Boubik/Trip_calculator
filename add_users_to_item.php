@@ -20,8 +20,10 @@
         <section class="navigation">
             <div class="nav-container">
                 <div class="brand">
-                    <img src="./images/icons8-calculator.svg" alt="">
-                    <a href="index.php">Split-Calculator</a>
+                    <a href="index.php">
+                        <img src="./images/icons8-calculator.svg" alt="">
+                        Split-Calculator
+                    </a>
                 </div>
 
                 <nav>
