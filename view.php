@@ -269,7 +269,7 @@
                             <th>Will pay</th>
                             <th>Note</th>
                             <?php
-                            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"]) && !isset($_GET["share"]) || is_editor($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
                                 echo "<th colspan=\"2\">Controls</th>";
                             }
                             ?>
@@ -287,7 +287,7 @@
                         echo "<td>" . $row["payer"] . "</td>";
                         echo "<td>" . $row["will_pay"] . "</td>";
                         echo "<td>" . $row["note"] . "</td>";
-                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"])) {
+                        if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"]) || is_editor($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
                             echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
                         }
                         echo " </tr>";

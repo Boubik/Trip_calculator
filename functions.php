@@ -357,6 +357,18 @@ function own_item_set($conn, $id, $name)
     }
 }
 
+function is_editor($conn, $item_set_id, $name)
+{
+    $sql = "SELECT `user_name` FROM `editors` WHERE `item_set_id` = '" . $item_set_id . "' AND `user_name` = '" . $name . "'";
+    foreach (select($conn, $sql) as $row) {
+        if ($row["user_name"] == $name) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function get_owner_of_item_set($conn, $id)
 {
     $sql = "SELECT `owner` FROM `item_set` WHERE `id` = '" . $id . "'";
