@@ -1,4 +1,6 @@
 <?php
+// no errors on page
+error_reporting(0);
 
 function connect_db()
 {
