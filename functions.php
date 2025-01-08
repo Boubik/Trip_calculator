@@ -380,3 +380,45 @@ function add_edditor($conn, $item_set_id, $username)
     $sql = "INSERT INTO `editors` (`item_set_id`, `user_name`) VALUES ('" . $item_set_id . "', '" . $username . "');";
     return insert($conn, $sql);
 }
+
+function get_item_set($conn, $id)
+{
+    $sql = "SELECT * FROM `item_set` WHERE `id` = '" . $id . "'";
+    return select($conn, $sql)[0];
+}
+
+function users_in_item_set_no_admin($conn, $id)
+{
+    $sql = "SELECT `user`.`name` FROM `user` INNER JOIN `user_has_item_set` ON `user_has_item_set`.`user_name` = `user`.`name` INNER JOIN `item_set` ON `item_set`.`id` = `user_has_item_set`.`item_set_id` WHERE `item_set`.`id` = '" . $id . "' AND `user`.`name` != `item_set`.`owner`";
+    return select($conn, $sql);
+}
+
+function update_item_set($conn, $id, $name)
+{
+    $sql = "UPDATE `item_set` SET `name` = '" . $name . "' WHERE `id` = '" . $id . "'";
+    update($conn, $sql);
+}
+
+function delete_editors($conn, $item_set_id, $delete)
+{
+    $sql = "DELETE FROM `editors` WHERE `item_set_id` = '" . $item_set_id . "' AND `user_name` IN ('" . implode("','", $delete) . "')";
+    return delete($conn, $sql);
+}
+
+function add_editors($conn, $item_set_id, $add)
+{
+    foreach ($add as $username) {
+        $sql = "INSERT INTO `editors` (`item_set_id`, `user_name`) VALUES ('" . $item_set_id . "', '" . $username . "');";
+        insert($conn, $sql);
+    }
+}
+
+function get_editors($conn, $item_set_id)
+{
+    $sql = "SELECT `user_name` FROM `editors` WHERE `item_set_id` = '" . $item_set_id . "'";
+    $editors = array();
+    foreach (select($conn, $sql) as $row) {
+        $editors[$row["user_name"]] = true;
+    }
+    return $editors;
+}

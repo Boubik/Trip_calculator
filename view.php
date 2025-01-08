@@ -41,6 +41,7 @@ echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . "</h1>";
     <div class="container-view">
 
         <?php
+        echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . get_item_set($conn, filter_input(INPUT_GET, "id"))["name"] . "</h1>";
         $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
         $people = array();
         $currancys = select($conn, $sql);
