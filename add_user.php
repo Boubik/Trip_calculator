@@ -17,7 +17,10 @@
 
     $navbarItems = '
     <li>
-        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
+        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '">Back</a>
+    </li>
+    <li>
+        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
     </li>
     <li>
         <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
