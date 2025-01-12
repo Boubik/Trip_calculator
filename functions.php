@@ -263,7 +263,7 @@ function cant_see_itemset($conn, $id, $username)
 {
     $configs = include('config.php');
     if ($username == $configs["admin"]) {
-        return true;
+        return false;
     }
     $sql = "SELECT `user_has_item_set`.`user_name` FROM `item_set` INNER JOIN `user_has_item_set` on  `item_set`.`id` = `user_has_item_set`.`item_set_id` WHERE `item_set`.`id` = '" . $id . "' AND `user_has_item_set`.`user_name` = '" . $username . "'";
     $select = select($conn, $sql);
