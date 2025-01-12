@@ -21,9 +21,7 @@ if (isset($_SESSION["username"]) and isset($_SESSION["password"])) {
 } else {
     $login = false;
 }
-?>
 
-<?php
 if ($login) {
     $navbarItems = '
     <li>
