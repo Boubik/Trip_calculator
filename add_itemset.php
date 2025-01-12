@@ -12,7 +12,7 @@
     include "functions.php";
     $conn = connect_db();
     session_start();
-    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
+    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"])) {
         header("Location: index.php");
     }
     ?>
