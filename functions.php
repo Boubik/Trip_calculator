@@ -267,7 +267,7 @@ function cant_see_itemset($conn, $id, $username)
     }
     $sql = "SELECT `user_has_item_set`.`user_name` FROM `item_set` INNER JOIN `user_has_item_set` on  `item_set`.`id` = `user_has_item_set`.`item_set_id` WHERE `item_set`.`id` = '" . $id . "' AND `user_has_item_set`.`user_name` = '" . $username . "'";
     $select = select($conn, $sql);
-    return (bool)count($select);
+    return !(bool)count($select);
 }
 
 function user_has_item_set($conn, $id, $user)
@@ -421,4 +421,30 @@ function get_editors($conn, $item_set_id)
         $editors[$row["user_name"]] = true;
     }
     return $editors;
+}
+
+function get_editors_with_owner($conn, $item_set_id)
+{
+    $sql = "SELECT `owner` FROM `item_set` WHERE `item_set`.`id` = '" . $item_set_id . "'";
+    $row = select($conn, $sql)[0];
+    $editors = get_editors($conn, $item_set_id);
+    $editors[$row["owner"]] = true;
+    return $editors;
+}
+
+function is_edditor_or_owner($conn, $item_set_id, $user)
+{
+    $editors = get_editors_with_owner($conn, $item_set_id);
+    if (isset($editors[$user])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function change_password($conn, $username, $oldPass, $newPass)
+{
+    $sql = "UPDATE `user` SET `password`='" . $newPass . "' WHERE `name` = '" . $username . "' AND `password` = '" . $oldPass . "';";
+    echo $sql;
+    update($conn, $sql);
 }

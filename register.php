@@ -43,6 +43,7 @@
         include "functions.php";
         $conn = connect_db();
         session_start();
+        print_r($_POST);
         if (isset($_POST["username"]) and !is_null($_POST["username"])) {
             $user_is_taken = user_is_taken($conn, $_POST["username"]);
         }

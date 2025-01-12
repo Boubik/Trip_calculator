@@ -8,36 +8,53 @@ include "functions.php";
 $conn = connect_db();
 session_start();
 
-$navbarItems = '
-<li>
-    <a href="edit_item_set.php?id=' . filter_input(INPUT_GET, "id") . '">Edit</a>
-</li>
-<li>
-    <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
-</li>
-<li>
-    <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-</li>
-<li>
-    <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
-</li>
-<li>
-    <a href="logout.php">Logout</a>
-</li>
-';
+if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+    if (!isset($_GET["share"])) {
+        header("Location: index.php");
+    }
+    $_SESSION["username"] = filter_input(INPUT_GET, "share");
+}
+
+if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+    $navbarItems = '
+    <li>
+        <a href="edit_item_set.php?id=' . filter_input(INPUT_GET, "id") . '">Edit</a>
+    </li>
+    <li>
+        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
+    </li>
+    <li>
+        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
+    </li>
+    <li>
+        <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
+    </li>
+    <li>
+        <a href="logout.php">Logout</a>
+    </li>
+    ';
+} else {
+    $navbarItems = '
+    <li>
+        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
+    </li>
+    <li>
+        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
+    </li>
+    <li>
+        <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
+    </li>
+    <li>
+        <a href="logout.php">Logout</a>
+    </li>
+    ';
+}
+
 include "template.php";
 echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . "</h1>";
 ?>
 
 <main>
-    <?php
-    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || (!cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && true)) {
-        if (!isset($_GET["share"])) {
-            header("Location: index.php");
-        }
-        $_SESSION["username"] = filter_input(INPUT_GET, "share");
-    }
-    ?>
     <div class="container-view">
 
         <?php

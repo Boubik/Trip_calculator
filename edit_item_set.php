@@ -2,7 +2,7 @@
 include "functions.php";
 $conn = connect_db();
 session_start();
-if (isset($_POST["username"]) && own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
+if (!isset($_POST["username"]) && !own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
     header("Location: index.php");
 }
 
