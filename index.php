@@ -7,7 +7,6 @@ include "functions.php";
 $conn = connect_db();
 session_start();
 
-
 if ((isset($_POST["username"]) and !is_null($_POST["username"])) and (isset($_POST["username"]) and !is_null($_POST["password"]))) {
     $_SESSION["username"] = $_POST["username"];
     $_SESSION["password"] = $_POST["password"];
