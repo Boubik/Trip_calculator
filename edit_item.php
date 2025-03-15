@@ -3,8 +3,7 @@ include "functions.php";
 $conn = connect_db();
 session_start();
 if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || !isset($_GET["back"]) || !isset($_GET["id"]) || !is_edditor_or_owner($conn, filter_input(INPUT_GET, "back"), $_SESSION["username"])) {
-    echo "pes";
-    //header("Location: index.php");
+    header("Location: index.php");
 }
 $navbarItems =
     '
