@@ -1,265 +1,292 @@
 <?php
-$pageTitle = "Split Calculator | View";
-$head = "
-<script src=\"js/sorttable.js\"></script>
-<script src=\"js/chart.js\"></script>";
 
-include "functions.php";
+$pageTitle = 'Split Calculator | View';
+$head = '
+<script src="js/sorttable.js"></script>
+<script src="js/chart.js"></script>';
+
+include __DIR__ . '/functions.php';
+
 $conn = connect_db();
-session_start();
+start_secure_session();
 
-if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
-    if (!isset($_GET["share"])) {
-        header("Location: index.php");
+$username = require_login($conn);
+$itemSetId = get_int('id');
+
+if ($itemSetId === null || cant_see_itemset($conn, $itemSetId, $username)) {
+    redirect('index.php');
+}
+
+$itemSet = get_item_set($conn, $itemSetId);
+if ($itemSet === null) {
+    redirect('index.php');
+}
+
+$isOwner = own_item_set($conn, $itemSetId, $username);
+$canEditItems = is_edditor_or_owner($conn, $itemSetId, $username);
+$navbarItems = '';
+
+if ($isOwner) {
+    $navbarItems .= '
+    <li>
+        <a href="edit_item_set.php?id=' . (int)$itemSetId . '">Edit</a>
+    </li>';
+}
+
+if ($canEditItems) {
+    $navbarItems .= '
+    <li>
+        <a href="add_user.php?id=' . (int)$itemSetId . '">Add user</a>
+    </li>';
+}
+
+$navbarItems .= '
+<li>
+    <a href="add_item.php?id=' . (int)$itemSetId . '">Add Item</a>
+</li>
+<li>
+    <a href="edit_account.php">Edit Account</a>
+</li>
+<li>
+    <a href="logout.php">Logout</a>
+</li>
+';
+
+include __DIR__ . '/template.php';
+
+$currencies = select(
+    $conn,
+    'SELECT `item`.`currency_name`
+     FROM `item`
+     WHERE `item`.`item_set_id` = :item_set_id
+     GROUP BY `item`.`currency_name`
+     ORDER BY `item`.`currency_name` ASC',
+    array(':item_set_id' => $itemSetId)
+);
+$members = select(
+    $conn,
+    'SELECT `user`.`name`
+     FROM `user_has_item_set`
+     INNER JOIN `user` ON `user`.`name` = `user_has_item_set`.`user_name`
+     WHERE `user_has_item_set`.`item_set_id` = :item_set_id
+     ORDER BY `user`.`name` ASC',
+    array(':item_set_id' => $itemSetId)
+);
+$people = array();
+
+foreach ($currencies as $currencyRow) {
+    $currencyName = $currencyRow['currency_name'];
+
+    foreach ($members as $memberRow) {
+        $memberName = $memberRow['name'];
+        $spentRows = select(
+            $conn,
+            'SELECT SUM(`item`.`price`) AS `sum`, `item`.`currency_name` AS `currency`, `item`.`payer` AS `name`
+             FROM `item`
+             WHERE `item`.`item_set_id` = :item_set_id
+               AND `item`.`payer` = :payer
+               AND `item`.`currency_name` = :currency
+             GROUP BY `item`.`currency_name`, `item`.`payer`',
+            array(
+                ':item_set_id' => $itemSetId,
+                ':payer' => $memberName,
+                ':currency' => $currencyName,
+            )
+        );
+
+        if (count($spentRows) > 0) {
+            $people[] = $spentRows[0];
+        } else {
+            $people[] = array(
+                'name' => $memberName,
+                'sum' => 0,
+                'currency' => $currencyName,
+            );
+        }
     }
-    $_SESSION["username"] = filter_input(INPUT_GET, "share");
 }
 
-if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
-    $navbarItems = '
-    <li>
-        <a href="edit_item_set.php?id=' . filter_input(INPUT_GET, "id") . '">Edit</a>
-    </li>
-    <li>
-        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
-    </li>
-    <li>
-        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-    </li>
-    <li>
-        <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
-    </li>
-    <li>
-        <a href="logout.php">Logout</a>
-    </li>
-    ';
-} else {
-    $navbarItems = '
-    <li>
-        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '&share=' . $_SESSION["username"] . '">Share</a>
-    </li>
-    <li>
-        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-    </li>
-    <li>
-        <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
-    </li>
-    <li>
-        <a href="logout.php">Logout</a>
-    </li>
-    ';
-}
-
-include "template.php";
-echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . "</h1>";
+$categoryRows = select(
+    $conn,
+    'SELECT SUM(`item`.`price`) AS `sum`,
+            `currency`.`name` AS `currency`,
+            `category`.`name` AS `category`
+     FROM `category`
+     INNER JOIN `item` ON `item`.`category_name` = `category`.`name`
+     INNER JOIN `item_set` ON `item`.`item_set_id` = `item_set`.`id`
+     INNER JOIN `currency` ON `currency`.`name` = `item`.`currency_name`
+     WHERE `item_set`.`id` = :item_set_id
+     GROUP BY `currency`.`name`, `category`.`name`
+     ORDER BY `currency`.`name` ASC, `sum` DESC',
+    array(':item_set_id' => $itemSetId)
+);
+$items = select(
+    $conn,
+    "SELECT `item`.`id`,
+            `item`.`price`,
+            `item`.`currency_name`,
+            `item`.`note`,
+            `item`.`category_name`,
+            `item`.`payer`,
+            (
+                SELECT GROUP_CONCAT(`user`.`name` ORDER BY `user`.`name` SEPARATOR ', ')
+                FROM `user`
+                INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name`
+                WHERE `item_has_user`.`item_id` = `item`.`id`
+            ) AS `will_pay`
+     FROM `item`
+     WHERE `item`.`item_set_id` = :item_set_id
+     ORDER BY `item`.`price` DESC, `item`.`id` DESC",
+    array(':item_set_id' => $itemSetId)
+);
 ?>
 
 <main>
     <div class="container-view">
+        <h1 class="heading" style="font-size: 60px"><?php echo e($itemSet['name']); ?></h1>
 
-        <?php
-        echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . get_item_set($conn, filter_input(INPUT_GET, "id"))["name"] . "</h1>";
-        $sql = "SELECT `item`.`currency_name` FROM `item_set` INNER JOIN `item` ON `item`.`item_set_id` = `item_set`.`id` WHERE `item_set_id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `item`.`currency_name`";
-        $people = array();
-        $currancys = select($conn, $sql);
-        foreach ($currancys as $currancy) {
-            $currancy = $currancy["currency_name"];
-            $sql = "SELECT `user`.`name` FROM `user_has_item_set` INNER JOIN `user` ON `user`.`name` = `user_has_item_set`.`user_name` WHERE `user_has_item_set`.`item_set_id` = '" . filter_input(INPUT_GET, "id") . "'";
-            $select = select($conn, $sql);
-            foreach ($select as $user) {
-                $user = $user["name"];
-                $sql = "SELECT sum(item.price) as 'sum', item.currency_name as 'currency', item.payer as 'name' FROM item_set INNER JOIN item ON item_set.id = item.item_set_id WHERE item_set.id = '" . filter_input(INPUT_GET, "id") . "' AND `item`.`payer` = '" . $user . "' AND `item`.`currency_name` = '" . $currancy . "' GROUP BY item.currency_name, item.payer;";
-                $select_people = select($conn, $sql);
-                if (count($select_people) > 0) {
-                    $select_people = $select_people[0];
-                } else {
-                    $select_people["name"] = $user;
-                    $select_people["sum"] = 0;
-                    $select_people["currency"] = $currancy;
-                }
-                $people[] = $select_people;
-            }
-        }
-
-        $sql = "SELECT SUM(`item`.`price`) as `sum`, `currency`.`name` as 'currency', `category`.`name` as 'category' FROM `category` INNER JOIN `item` on `item`.`category_name` = `category`.`name` INNER JOIN `item_set` on `item`.`item_set_id` = `item_set`.`id` INNER JOIN `currency` ON `currency`.`name` = `item`.`currency_name` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' GROUP BY `currency`.`name`, `category`.`name` ORDER BY 'currency' ASC, `sum` DESC";
-        $category = select($conn, $sql);
-        ?>
-
-        <table id='second' class="styled-table">
+        <table id="second" class="styled-table">
             <caption>
                 <h1 class="heading" id="ppl" style="font-size: 40px">by People</h1>
             </caption>
             <thead>
                 <tr>
-                    <th>
-                        Who
-                    </th>
-                    <th>
-                        Before calculation
-                    </th>
-                    <th>
-                        After calculation
-                    </th>
+                    <th>Who</th>
+                    <th>Before calculation</th>
+                    <th>After calculation</th>
                 </tr>
             </thead>
 
             <tbody>
                 <?php
                 $dataPeople = array();
-                $people_with_currencys = array();
-                foreach ($people as $row) {
-                    echo "<tr>";
-                    echo "<td>";
-                    echo $row["name"];
-                    echo "</td>";
+                $peopleWithCurrencies = array();
 
-                    echo "<td>";
-                    if (is_null($row["sum"])) {
-                        echo "0";
-                    } else {
-                        echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
-                    }
-                    echo "</td>";
-                    echo "<td>";
-                    $people_with_currencys[$row["currency"]][$row["name"]] = user_spent_after_calculation($conn, filter_input(INPUT_GET, "id"), $row["currency"], $row["name"]);
-                    $dataPeople[] = array("label" => $row["name"], "value" => $people_with_currencys[$row["currency"]][$row["name"]]);
-                    echo number_format($people_with_currencys[$row["currency"]][$row["name"]], 2, ",", " ") . " " . $row["currency"];
-                    $people_with_currencys[$row["currency"]][$row["name"]] = $row["sum"] - $people_with_currencys[$row["currency"]][$row["name"]];
-                    echo "</td>";
-                    echo "</tr>";
+                foreach ($people as $row) {
+                    echo '<tr>';
+                    echo '<td>' . e($row['name']) . '</td>';
+                    echo '<td>' . number_format((float)$row['sum'], 2, ',', ' ') . ' ' . e($row['currency']) . '</td>';
+
+                    $afterCalculation = user_spent_after_calculation($conn, $itemSetId, $row['currency'], $row['name']);
+                    $peopleWithCurrencies[$row['currency']][$row['name']] = (float)$row['sum'] - $afterCalculation;
+                    $dataPeople[] = array('label' => $row['name'], 'value' => $afterCalculation);
+
+                    echo '<td>' . number_format($afterCalculation, 2, ',', ' ') . ' ' . e($row['currency']) . '</td>';
+                    echo '</tr>';
                 }
                 ?>
             </tbody>
         </table>
         <section class="graf"><canvas id="PeopleGraf"></canvas></section>
 
-
-        <table id='second' class="styled-table">
+        <table id="second" class="styled-table">
             <caption>
                 <h1 id="ppl" class="heading" style="font-size: 40px">by Category</h1>
             </caption>
             <thead>
                 <tr>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Everyone price
-                    </th>
-                    <th>
-                        My Price
-                    </th>
+                    <th>Category</th>
+                    <th>Everyone price</th>
+                    <th>My Price</th>
                 </tr>
             </thead>
             <tbody>
-
                 <?php
                 $dataCategory = array();
                 $sumAll = array();
-                foreach ($category as $row) {
-                    $sumAll[$row["currency"]]["everyone"] = 0;
-                    $sumAll[$row["currency"]]["me"] = 0;
-                    echo "<tr>";
-                    echo "<td>";
-                    echo $row["category"];
-                    echo "</td>";
 
-                    echo "<td>";
-                    if (is_null($row["sum"])) {
-                        echo "0";
-                    } else {
-                        echo number_format($row["sum"], 2, ",", " ") . " " . $row["currency"];
-                        $sumAll[$row["currency"]]["everyone"] += $row["sum"];
+                foreach ($categoryRows as $row) {
+                    if (!isset($sumAll[$row['currency']])) {
+                        $sumAll[$row['currency']] = array(
+                            'everyone' => 0,
+                            'me' => 0,
+                        );
                     }
-                    echo "</td>";
-                    echo "<td>";
-                    $sum = 0;
-                    foreach (get_my_price_per_category($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"], $row["category"], $row["currency"]) as $item) {
-                        $sum += ($item["price"] / count_users_on_item($conn, $item["id"]));
+
+                    echo '<tr>';
+                    echo '<td>' . e($row['category']) . '</td>';
+                    echo '<td>' . number_format((float)$row['sum'], 2, ',', ' ') . ' ' . e($row['currency']) . '</td>';
+
+                    $sumAll[$row['currency']]['everyone'] += (float)$row['sum'];
+
+                    $mySum = 0;
+                    foreach (get_my_price_per_category($conn, $itemSetId, $username, $row['category'], $row['currency']) as $item) {
+                        $count = count_users_on_item($conn, $item['id']);
+                        if ($count > 0) {
+                            $mySum += ((float)$item['price'] / $count);
+                        }
                     }
-                    $sumMe = $sum;
-                    $sumAll[$row["currency"]]["me"] += $sum;
-                    $dataCategory[] = array("label" => $row["category"], "value" => $sum);
-                    echo number_format($sum, 2, ",", " ") . " " . $row["currency"];
-                    echo "</td>";
-                    echo "</tr>";
+
+                    $sumAll[$row['currency']]['me'] += $mySum;
+                    $dataCategory[] = array('label' => $row['category'], 'value' => $mySum);
+
+                    echo '<td>' . number_format($mySum, 2, ',', ' ') . ' ' . e($row['currency']) . '</td>';
+                    echo '</tr>';
                 }
-                echo "<tr>";
-                echo "<td id='empty' colspan=\"3\"></td>";
-                echo "</tr>";
+
+                if (count($sumAll) > 0) {
+                    echo '<tr><td id="empty" colspan="3"></td></tr>';
+                }
+
                 foreach ($sumAll as $currency => $sum) {
-                    echo "<tr>";
-                    echo "<td>";
-                    echo "All " . $currency;
-                    echo "</td>";
-                    echo "<td>";
-                    echo number_format($sum["everyone"], 2, ",", " ") . " " . $currency;
-                    echo "</td>";
-                    echo "<td>";
-                    echo number_format($sum["me"], 2, ",", " ") . " " . $currency;
-                    echo "</td>";
-                    echo "</tr>";
+                    echo '<tr>';
+                    echo '<td>' . e('All ' . $currency) . '</td>';
+                    echo '<td>' . number_format($sum['everyone'], 2, ',', ' ') . ' ' . e($currency) . '</td>';
+                    echo '<td>' . number_format($sum['me'], 2, ',', ' ') . ' ' . e($currency) . '</td>';
+                    echo '</tr>';
                 }
                 ?>
             </tbody>
         </table>
         <section class="graf"><canvas id="CategoryGraf"></canvas></section>
 
-
-        <table id='second' class="styled-table">
+        <table id="second" class="styled-table">
             <caption>
                 <h1 id="ppl" class="heading" style="font-size: 40px">Calculated payback</h1>
             </caption>
             <thead>
                 <tr>
-                    <th>
-                        From
-                    </th>
-                    <th>
-                        To
-                    </th>
-                    <th>
-                        How much
-                    </th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>How much</th>
                 </tr>
             </thead>
-            <!-- <tr>
-                    <td id='empty' colspan="3"></td>
-                </tr> -->
             <?php
-            $i = 0;
-            foreach ($people_with_currencys as $currency => $users_per_curency) {
-                if ($i != 0) {
-                    echo "<td id='empty' colspan=\"3\"></td>";
+            $currencyIndex = 0;
+            foreach ($peopleWithCurrencies as $currency => $usersPerCurrency) {
+                if ($currencyIndex !== 0) {
+                    echo '<tr><td id="empty" colspan="3"></td></tr>';
                 }
-                while (!all_have_same_number($users_per_curency)) {
-                    $smallestId =  find_smallest($users_per_curency);
-                    $bigestId = find_bigest($users_per_curency);
-                    if ($users_per_curency[$smallestId] == 0 or abs($users_per_curency[$bigestId]) == 0 or $users_per_curency[$bigestId] == $users_per_curency[$smallestId]) {
-                        break;
-                    } else {
-                        echo "<tr></tr>";
-                        if ($users_per_curency[$smallestId] < abs($users_per_curency[$bigestId])) {
-                            $number = $users_per_curency[$smallestId];
-                        } else {
-                            $number = abs($users_per_curency[$bigestId]);
-                        }
-                        $users_per_curency[$smallestId] -= $number;
-                        $users_per_curency[$bigestId] += $number;
 
-                        echo "<td>";
-                        echo $smallestId;
-                        echo "</td>";
-                        echo "<td>";
-                        echo $bigestId;
-                        echo "</td>";
-                        echo "<td>";
-                        echo number_format(-$number, 2, ",", " ") . " " . $currency;
-                        echo "</td>";
-                        echo "</tr>";
+                while (!all_have_same_number($usersPerCurrency)) {
+                    $smallestId = find_smallest($usersPerCurrency);
+                    $biggestId = find_bigest($usersPerCurrency);
+
+                    if (
+                        $usersPerCurrency[$smallestId] == 0 ||
+                        abs($usersPerCurrency[$biggestId]) == 0 ||
+                        $usersPerCurrency[$biggestId] == $usersPerCurrency[$smallestId]
+                    ) {
+                        break;
                     }
+
+                    if ($usersPerCurrency[$smallestId] < abs($usersPerCurrency[$biggestId])) {
+                        $number = $usersPerCurrency[$smallestId];
+                    } else {
+                        $number = abs($usersPerCurrency[$biggestId]);
+                    }
+
+                    $usersPerCurrency[$smallestId] -= $number;
+                    $usersPerCurrency[$biggestId] += $number;
+
+                    echo '<tr>';
+                    echo '<td>' . e($smallestId) . '</td>';
+                    echo '<td>' . e($biggestId) . '</td>';
+                    echo '<td>' . number_format(-$number, 2, ',', ' ') . ' ' . e($currency) . '</td>';
+                    echo '</tr>';
                 }
-                $i++;
+
+                $currencyIndex++;
             }
             ?>
         </table>
@@ -267,9 +294,13 @@ echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . "</h1>";
         <div class="table-container">
             <table class="styled-table">
                 <caption>
-                    <h1 id=" ppl" class="heading" style="font-size: 40px">Items
+                    <h1 id="ppl" class="heading" style="font-size: 40px">
+                        Items
                         <?php
-                        echo "-> owner is " . get_owner_of_item_set($conn, filter_input(INPUT_GET, "id"));
+                        $owner = get_owner_of_item_set($conn, $itemSetId);
+                        if ($owner !== null) {
+                            echo ' -> owner is ' . e($owner);
+                        }
                         ?>
                     </h1>
                 </caption>
@@ -281,87 +312,99 @@ echo "<h1 class=\"heading\" style=\"font-size: 60px\">" . "</h1>";
                         <th>Paid</th>
                         <th>Will pay</th>
                         <th>Note</th>
-                        <?php
-                        if ((own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"]) && !isset($_GET["share"])) || (isset($_SESSION["username"]) && is_editor($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]))) {
-                            echo "<th colspan=\"2\">Controls</th>";
-                        }
-                        ?>
+                        <?php if ($canEditItems): ?>
+                            <th colspan="2">Controls</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
-
-                <?php
-                $sql = "SELECT `item`.`id`, `item`.`price`, `currency_name`, `item`.`note`, `item`.`category_name`, `item`.`payer`, `currency_name`, (SELECT GROUP_CONCAT(`user`.`name` SEPARATOR ', ') AS 'payer' FROM `user` INNER JOIN `item_has_user` ON `item_has_user`.`user_name` = `user`.`name` INNER JOIN `item` `i` ON `i`.`id` = `item_has_user`.`item_id` WHERE `item`.`id` = i.id) as 'will_pay' FROM `item` INNER JOIN `category` ON `category`.`name` = `item`.`category_name` INNER JOIN `item_set` ON `item_set`.`id` = `item`.`item_set_id` WHERE `item_set`.`id` = '" . filter_input(INPUT_GET, "id") . "' ORDER BY `item`.`price` DESC";
-                $rows = select($conn, $sql);
-                foreach ($rows as $row) {
-                    echo "<tr>";
-                    echo "<td>" . number_format($row["price"], 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                    echo "<td>" . number_format(price_per_item_for_one_person($conn, $row["id"], $row["price"]), 2, ",", " ") . " " . $row["currency_name"] . "</td>";
-                    echo "<td>" . $row["category_name"] . "</td>";
-                    echo "<td>" . $row["payer"] . "</td>";
-                    echo "<td>" . $row["will_pay"] . "</td>";
-                    echo "<td>" . $row["note"] . "</td>";
-                    if ((own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]) && !isset($_GET["share"]) && !isset($_GET["share"])) || (isset($_SESSION["username"]) && is_editor($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"]))) {
-                        echo "<td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "\"><img src=\"./images/edit-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Edit\"></a> <td><a href=\"edit_item.php?id=" . $row["id"] . "&back=" . filter_input(INPUT_GET, "id") . "&delete=true\"><img src=\"./images/delete-button-svgrepo-com.svg\" width=\"24\" height=\"24\" title=\"Delete\"></a></td>";
-                    }
-                    echo " </tr>";
-                }
-                ?>
+                <tbody>
+                    <?php foreach ($items as $row): ?>
+                        <tr>
+                            <td><?php echo number_format((float)$row['price'], 2, ',', ' ') . ' ' . e($row['currency_name']); ?></td>
+                            <td><?php echo number_format(price_per_item_for_one_person($conn, $row['id'], $row['price']), 2, ',', ' ') . ' ' . e($row['currency_name']); ?></td>
+                            <td><?php echo e($row['category_name']); ?></td>
+                            <td><?php echo e($row['payer']); ?></td>
+                            <td><?php echo e($row['will_pay']); ?></td>
+                            <td><?php echo e($row['note']); ?></td>
+                            <?php if ($canEditItems): ?>
+                                <td>
+                                    <a href="edit_item.php?id=<?php echo (int)$row['id']; ?>&amp;back=<?php echo (int)$itemSetId; ?>">
+                                        <img src="./images/edit-svgrepo-com.svg" width="24" height="24" title="Edit" alt="Edit">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="edit_item.php?id=<?php echo (int)$row['id']; ?>&amp;back=<?php echo (int)$itemSetId; ?>&amp;delete=true">
+                                        <img src="./images/delete-button-svgrepo-com.svg" width="24" height="24" title="Delete" alt="Delete">
+                                    </a>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
         </div>
+    </div>
 </main>
-<!-- Výpis grafů -->
-<script>
-    var data = <?php echo json_encode($dataPeople); ?>;
 
-    var ctx = document.getElementById('PeopleGraf').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'pie',
+<script>
+    var peopleData = <?php echo json_encode($dataPeople, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+    var peopleContext = document.getElementById("PeopleGraf").getContext("2d");
+
+    new Chart(peopleContext, {
+        type: "pie",
         data: {
-            labels: data.map(item => item.label),
+            labels: peopleData.map(function (item) {
+                return item.label;
+            }),
             datasets: [{
-                data: data.map(item => item.value)
+                data: peopleData.map(function (item) {
+                    return item.value;
+                })
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'right', // Set the position of the legends (options: 'top', 'bottom', 'left', 'right')
+                    position: "right",
                     labels: {
-                        color: 'white', // Set the font color of the legends
+                        color: "white",
                         font: {
-                            size: 16, // Set the font size of the legends
-                            weight: 'bold' // Set the font weight of the legends
+                            size: 16,
+                            weight: "bold"
                         }
-                        // You can customize other properties as per your requirements
                     }
                 }
             }
         }
     });
-    var data = <?php echo json_encode($dataCategory); ?>;
 
-    var ctx = document.getElementById('CategoryGraf').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'pie',
+    var categoryData = <?php echo json_encode($dataCategory, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+    var categoryContext = document.getElementById("CategoryGraf").getContext("2d");
+
+    new Chart(categoryContext, {
+        type: "pie",
         data: {
-            labels: data.map(item => item.label),
+            labels: categoryData.map(function (item) {
+                return item.label;
+            }),
             datasets: [{
-                data: data.map(item => item.value)
+                data: categoryData.map(function (item) {
+                    return item.value;
+                })
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'left', // Set the position of the legends (options: 'top', 'bottom', 'left', 'right')
+                    position: "left",
                     labels: {
-                        color: 'white', // Set the font color of the legends
+                        color: "white",
                         font: {
-                            size: 16, // Set the font size of the legends
-                            weight: 'bold' // Set the font weight of the legends
+                            size: 16,
+                            weight: "bold"
                         }
-                        // You can customize other properties as per your requirements
                     }
                 }
             }

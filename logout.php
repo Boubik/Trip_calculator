@@ -1,5 +1,6 @@
 <?php
-session_start();
-unset($_SESSION["username"]);
-unset($_SESSION["password"]);
-header("Location: index.php");
+
+include __DIR__ . '/functions.php';
+
+logout_current_user();
+redirect('index.php');

@@ -1,16 +1,40 @@
-function changePasswords() {
-    if (document.getElementById("newPassword").value.length >= 6 && document.getElementById("newPassword").value == document.getElementById("newPassword2").value) {
-        var hash1 = CryptoJS.SHA3(document.getElementById("oldPassword").value, {
-            outputLength: 512
-        });
-        var hash2 = CryptoJS.SHA3(document.getElementById("newPassword").value, {
-            outputLength: 512
-        });
-        var hash3 = CryptoJS.SHA3(document.getElementById("newPassword2").value, {
-            outputLength: 512
-        });
-        document.getElementById("oldPassword").value = hash1;
-        document.getElementById("newPassword").value = hash2;
-        document.getElementById("newPassword2").value = hash3;
+function fillLegacyHash(passwordFieldId, hiddenFieldId) {
+    if (typeof CryptoJS === "undefined") {
+        return true;
     }
+
+    var passwordField = document.getElementById(passwordFieldId);
+    var hiddenField = document.getElementById(hiddenFieldId);
+
+    if (!passwordField || !hiddenField) {
+        return true;
+    }
+
+    hiddenField.value = '';
+
+    if (passwordField.value.length === 0) {
+        return true;
+    }
+
+    hiddenField.value = CryptoJS.SHA3(passwordField.value, {
+        outputLength: 512
+    }).toString();
+
+    return true;
 }
+
+function changePasswords() {
+    return fillLegacyHash('oldPassword', 'oldPasswordLegacy');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var form = document.querySelector('form');
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener('submit', function () {
+        changePasswords();
+    });
+});

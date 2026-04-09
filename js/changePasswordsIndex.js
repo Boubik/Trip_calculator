@@ -1,8 +1,40 @@
-function changePasswords() {
-  if (document.getElementById("password").value.length != 0) {
-    var hash = CryptoJS.SHA3(document.getElementById("password").value, {
-      outputLength: 512,
-    });
-    document.getElementById("password").value = hash;
+function fillLegacyHash(passwordFieldId, hiddenFieldId) {
+  if (typeof CryptoJS === "undefined") {
+    return true;
   }
+
+  var passwordField = document.getElementById(passwordFieldId);
+  var hiddenField = document.getElementById(hiddenFieldId);
+
+  if (!passwordField || !hiddenField) {
+    return true;
+  }
+
+  hiddenField.value = "";
+
+  if (passwordField.value.length === 0) {
+    return true;
+  }
+
+  hiddenField.value = CryptoJS.SHA3(passwordField.value, {
+    outputLength: 512,
+  }).toString();
+
+  return true;
 }
+
+function changePasswords() {
+  return fillLegacyHash("password", "legacy_password");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  var form = document.getElementById("login-form");
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener("submit", function () {
+    changePasswords();
+  });
+});

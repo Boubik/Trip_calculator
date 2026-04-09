@@ -1,80 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <title>Split calculator | Add user to item set</title>
-</head>
+$pageTitle = 'Split Calculator | Add User';
 
-<body>
-    <?php
-    include "functions.php";
-    $conn = connect_db();
-    session_start();
-    if (!is_loged_in($conn, $_SESSION["username"], $_SESSION["password"]) || cant_see_itemset($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
-        header("Location: index.php");
+include __DIR__ . '/functions.php';
+
+$conn = connect_db();
+start_secure_session();
+
+$username = require_login($conn);
+$itemSetId = get_int('id');
+
+if (
+    $itemSetId === null ||
+    cant_see_itemset($conn, $itemSetId, $username) ||
+    !is_edditor_or_owner($conn, $itemSetId, $username)
+) {
+    redirect('index.php');
+}
+
+$error = '';
+$usernameToAdd = '';
+$makeEditor = false;
+$canManageEditors = own_item_set($conn, $itemSetId, $username);
+
+if (is_post_request()) {
+    require_post_csrf();
+
+    $usernameToAdd = post_string('username');
+    $makeEditor = post_boolean('editor');
+
+    if (!user_is_taken($conn, $usernameToAdd)) {
+        $error = 'User does not exist.';
+    } else {
+        user_has_item_set($conn, $itemSetId, $usernameToAdd);
+
+        if ($canManageEditors && $makeEditor) {
+            add_edditor($conn, $itemSetId, $usernameToAdd);
+        }
+
+        redirect('view.php?id=' . (int)$itemSetId);
     }
+}
 
-    $navbarItems = '
-    <li>
-        <a href="view.php?id=' . filter_input(INPUT_GET, "id") . '">Back</a>
-    </li>
-    <li>
-        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-    </li>
-    <li>
-        <a href="add_user.php?id=' . filter_input(INPUT_GET, "id") . '">Add user</a>
-    </li>
-    <li>
-        <a href="add_item.php?id=' . filter_input(INPUT_GET, "id") . '">Add Item</a>                            
-    </li>
-    <li>
-        <a href="logout.php">Logout</a>
-    </li>
-    ';
-    include "template.php";
-    ?>
+$navbarItems = '
+<li>
+    <a href="view.php?id=' . (int)$itemSetId . '">Back</a>
+</li>
+<li>
+    <a href="edit_account.php">Edit Account</a>
+</li>
+<li>
+    <a href="logout.php">Logout</a>
+</li>
+';
 
-    <section>
-        <div class='container'>
-            <?php
-            if (isset($_POST["submit"])) {
-                if (user_is_taken($conn, filter_input(INPUT_POST, "username"))) {
-                    user_has_item_set($conn, filter_input(INPUT_GET, "id"), filter_input(INPUT_POST, "username"));
-                    if (isset($_POST["editor"]) && $_POST["editor"] == "on") {
-                        add_edditor($conn, filter_input(INPUT_GET, "id"), filter_input(INPUT_POST, "username"));
-                    }
-                    header("Location: view.php?id=" . filter_input(INPUT_GET, "id"));
-                } else {
-                    echo "User doesn't exist!";
-                }
-            }
+include __DIR__ . '/template.php';
+?>
 
-            echo
-            '
-                <div class="center">
-                <form method="POST" action="">
-                <div class="txt_field">
-                <input type="text" name="username" placeholder="Name of the user" value="">                             
-                <span></span>
-                <label>Add user</label>
-                </div>';
+<main>
+    <div class="container container--flow">
+        <div class="center flow-card">
+            <div class="flow-card__header">
+                <h2>Add person</h2>
+                <p class="flow-card__intro">Invite another existing user to this trip.</p>
+            </div>
+            <div class="flow-card__body">
+                <?php if ($error !== ''): ?>
+                    <p class="form-message"><?php echo e($error); ?></p>
+                <?php endif; ?>
 
-            if (own_item_set($conn, filter_input(INPUT_GET, "id"), $_SESSION["username"])) {
-                echo "<input type=\"checkbox\" name=\"editor\">Make editor";
-            }
+                <form method="POST" action="" class="flow-form">
+                    <?php echo csrf_input(); ?>
 
-            echo '
-                <br>
-                <input type="submit" name="submit" value="Add">
-                <div class="signup_link">
-                </div>
+                    <div class="txt_field">
+                        <input type="text" id="username" name="username" placeholder=" " value="<?php echo e($usernameToAdd); ?>" maxlength="100" required>
+                        <span></span>
+                        <label for="username">Username</label>
+                    </div>
+
+                    <?php if ($canManageEditors): ?>
+                        <label class="toggle-option">
+                            <input type="checkbox" name="editor" value="1" <?php echo $makeEditor ? 'checked' : ''; ?>>
+                            <span class="toggle-option__content">
+                                <span class="toggle-option__title">Give editor access</span>
+                                <span class="toggle-option__hint">Editors can modify items and manage the trip content.</span>
+                            </span>
+                        </label>
+                    <?php endif; ?>
+
+                    <div class="flow-actions flow-actions--single">
+                        <input type="submit" name="submit" value="Add Person">
+                    </div>
                 </form>
-                </div>
-                ';
-            ?>
+            </div>
         </div>
-    </section>
+    </div>
+</main>
 </body>
 
 </html>

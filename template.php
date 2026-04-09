@@ -6,9 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg" href="./images/calculator_favicon.svg">
-    <title><?php echo isset($pageTitle) ? $pageTitle : "Split Calculator"; ?></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="style/default.css">
+    <title><?php echo isset($pageTitle) ? e($pageTitle) : 'Split Calculator'; ?></title>
+    <link rel="stylesheet" href="style/default.css?v=20260409f">
     <?php echo isset($head) ? $head : ''; ?>
 </head>
 
@@ -29,9 +28,7 @@
                         <li>
                             <a href="index.php">Home</a>
                         </li>
-                        <li>
-                            <?php echo isset($navbarItems) ? $navbarItems : ''; ?>
-                        </li>
+                        <?php echo isset($navbarItems) ? $navbarItems : ''; ?>
                     </ul>
                 </nav>
             </div>
